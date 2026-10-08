@@ -1,0 +1,6 @@
+{
+  "name": "caits-example",
+  "private": true,
+  "description": "The example app of CAITS: the files that `caits init --example` writes.",
+  "dependencies": {}
+}
