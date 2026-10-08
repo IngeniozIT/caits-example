@@ -1,0 +1,21 @@
+import "./CopyButton.scss";
+
+// The button that copies the text of an element of the page (target: its id), with its spaces collapsed: a command, or a prompt. Its
+// label names what it copies. Then it says "Copied" for two seconds, also to a screen reader.
+
+export interface Input {
+  target: string;
+  label: string;
+}
+
+<let/copied=false>
+
+<button type="button" class="copy-button" aria-label=input.label onClick() {
+  const text = document.getElementById(input.target)?.textContent?.replace(/\s+/g, " ").trim() ?? "";
+  void navigator.clipboard.writeText(text).then(() => {
+    copied = true;
+    setTimeout(() => { copied = false; }, 2000);
+  });
+}>
+  <span aria-live="polite">${copied ? "Copied" : "Copy"}</span>
+</button>

@@ -1,0 +1,36 @@
+// The button of the theme: a round button, without the color of the other buttons.
+.theme-switch {
+  position: relative;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  color: var(--ink-muted);
+  background: transparent;
+  box-shadow: none;
+  border-radius: 50%;
+
+  &:hover:not(:disabled) {
+    color: var(--ink);
+    background: color-mix(in srgb, var(--ink) 6%, transparent);
+    filter: none;
+    transform: none;
+  }
+
+  svg {
+    position: absolute;
+    inset: 0;
+    width: 1.15rem;
+    height: 1.15rem;
+    margin: auto;
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.3s;
+  }
+
+  // The icon tells what a click gives: the moon in the light theme, the sun in the dark theme. light-dark() reads the color-scheme
+  // of the theme, thus the right icon shows before the page runs any script.
+  &__moon { stroke: light-dark(currentColor, transparent); }
+  &__sun { stroke: light-dark(transparent, currentColor); }
+}

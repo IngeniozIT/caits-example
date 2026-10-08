@@ -1,5 +1,118 @@
-<main>
-  <h1>Home</h1>
-  <p>This app is the example of CAITS. The layout of the routes (+layout.marko) gives the same menu to each page.</p>
-  <p>On the page Messages, you can add, edit and remove messages. The View sends each change through the frontend context messages to the API of the backend context messages, which keeps the messages in a file.</p>
+import CopyButton from "./component/CopyButton.marko";
+import Logo from "./component/Logo.marko";
+import "./home-page.scss";
+
+static const documentation = "https://github.com/IngeniozIT/caits/wiki";
+
+<main class="home-page">
+  <section class="home-page__hero">
+    <div>
+      <p class="eyebrow">Your app is ready</p>
+      <h1>Code that stays <em>clean</em>.</h1>
+      <p class="lead">Today or a year from now, every change passes the same checks, or it doesn't get in. Whoever writes it: you, a teammate, or an AI agent.</p>
+      <div class="home-page__actions">
+        <a class="button" href="#start">Start here <span aria-hidden="true">↓</span></a>
+        <code class="home-page__prompt">npm run check</code>
+      </div>
+    </div>
+
+    <figure class="home-page__emblem">
+      <div class="home-page__arch"><Logo/></div>
+      <figcaption class="home-page__name"><b>C</b>lean <b>A</b>rchitecture <b>I</b>n <b>T</b>ype<b>S</b>cript</figcaption>
+    </figure>
+  </section>
+
+  <section class="home-page__section" aria-labelledby="harness">
+    <p class="eyebrow">The harness</p>
+    <h2 id="harness">Strict on quality. <em>Light</em> to write.</h2>
+    <ul class="home-page__promises">
+      <li>
+        <h3>Proven</h3>
+        <p><code>npm run check</code> runs them all, at once. Green means proven.</p>
+        <ul class="home-page__checks" aria-label="The checks">
+          <li><strong>Types</strong> <span>strict TypeScript, Marko templates included</span></li>
+          <li><strong>Lint</strong> <span>one style for all the code</span></li>
+          <li><strong>Architecture</strong> <span>each file in its layer, each import in the right direction</span></li>
+          <li><strong>Unit tests</strong> <span><b>100%</b> coverage</span></li>
+          <li><strong>Mutants</strong> <span><b>100%</b> killed: a test that checks nothing fails</span></li>
+          <li><strong>End-to-end</strong> <span>in a real browser</span></li>
+        </ul>
+      </li>
+      <li>
+        <h3>No debates</h3>
+        <p>Clean Architecture and DDD, already decided: where each file goes, what it may import. Learn <code>messages</code>, and you know the shape of every other part.</p>
+      </li>
+      <li>
+        <h3>No bloat</h3>
+        <p>Pages arrive as ready HTML. JavaScript ships only where the page reacts: on this page, the theme switch and the copy buttons.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="home-page__section" id="start" aria-labelledby="first-steps">
+    <p class="eyebrow">Where to start</p>
+    <h2 id="first-steps">Three steps to <em>your</em> app.</h2>
+    <ol class="home-page__steps">
+      <li class="home-page__done">
+        <h3>Create the app</h3>
+        <p>Done: it runs, and it passes every check.</p>
+      </li>
+      <li>
+        <span class="home-page__time">2 min</span>
+        <h3><a href="/messages">Try the example <span aria-hidden="true">→</span></a></h3>
+        <p>Add, edit and remove messages. Then open its code: <code>src/backend/messages/</code> and <code>src/frontend/messages/</code>.</p>
+      </li>
+      <li>
+        <span class="home-page__time">10 min</span>
+        <h3><a href=`${documentation}/Example`>Read the guide <span aria-hidden="true">↗</span></a></h3>
+        <p>One message, followed from the click to the file and back, layer by layer.</p>
+      </li>
+      <li>
+        <span class="home-page__time">15 min</span>
+        <h3><a href=`${documentation}/Example#remove-the-example`>Make it yours <span aria-hidden="true">↗</span></a></h3>
+        <p>Remove the example, then write your first use case, test first, with <code>npm run tdd</code> running.</p>
+      </li>
+    </ol>
+
+    <section class="home-page__terminal" aria-labelledby="commands">
+      <div class="home-page__bar"><p id="commands">The commands of every day</p></div>
+      <dl>
+        <dt id="command-dev">npm run dev</dt>
+        <dd><span>the app on localhost:3000, which follows your changes</span><CopyButton target="command-dev" label="Copy npm run dev"/></dd>
+        <dt id="command-tdd">npm run tdd</dt>
+        <dd><span>the tests of what you change, at each save</span><CopyButton target="command-tdd" label="Copy npm run tdd"/></dd>
+        <dt id="command-check">npm run check</dt>
+        <dd><span>before each commit: all the checks, at once</span><CopyButton target="command-check" label="Copy npm run check"/></dd>
+        <dt id="command-start">npm run build && npm start</dt>
+        <dd><span>the production app, on localhost:3000</span><CopyButton target="command-start" label="Copy npm run build && npm start"/></dd>
+      </dl>
+    </section>
+  </section>
+
+  <section class="home-page__section" aria-labelledby="agents">
+    <p class="eyebrow">With an AI agent</p>
+    <h2 id="agents">Less to read. <em>Nothing</em> to guess.</h2>
+    <ul class="home-page__reasons">
+      <li>
+        <h3>Less context, fewer tokens</h3>
+        <p>Small files, one shape everywhere, a kernel that finds the files by their place, and an <code>AGENTS.md</code> that gives the rules in a few lines. The agent reads a handful of files, not the whole project: its context stays free for your task, and the work is faster and cheaper.</p>
+      </li>
+      <li>
+        <h3>No odd decisions</h3>
+        <p>Where each file goes, what it may import, how it is tested: the rules have decided. An agent that improvises fails the check, which names the file and the rule. It corrects itself, without you.</p>
+      </li>
+      <li>
+        <h3>Work you can trust</h3>
+        <p>Strict types, 100% coverage, 100% of the mutants killed: the agent's code passes the same harness as yours. Green means done, and done right.</p>
+      </li>
+    </ul>
+
+    <section class="home-page__terminal" aria-labelledby="prompt">
+      <div class="home-page__bar">
+        <p id="prompt">A prompt to start with</p>
+        <CopyButton target="prompt-text" label="Copy the prompt"/>
+      </div>
+      <blockquote id="prompt-text">Add <code>orders</code> next to <code>messages</code>, in the backend and the frontend, with the use case <code>place-order</code>. Follow the shape of <code>messages</code>. Run <code>npm run check</code> until it passes.</blockquote>
+    </section>
+  </section>
 </main>

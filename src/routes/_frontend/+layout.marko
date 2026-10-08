@@ -1,15 +1,28 @@
+// The stylesheet of the app comes first: the stylesheets of the components and of the views come after it.
+import "./style/app.scss";
+import Logo from "./component/Logo.marko";
+import ThemeSwitch from "./component/ThemeSwitch.marko";
+
+// The theme that the user chose with the ThemeSwitch, from its cookie: "light", "dark", or none (the pages follow the system).
+static function themeOf(request: Request) {
+  return request.headers.get("cookie")?.match(/(?:^|;\s*)theme=(light|dark)(?=;|$)/)?.[1];
+}
+
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme=themeOf($global.request)>
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>CAITS example</title>
+    <title>CAITS</title>
   </head>
   <body>
     <header>
+      <a href="/"><Logo/><span>CAITS</span></a>
       <nav aria-label="Main menu">
-        <a href="/">Home</a> · <a href="/messages">Messages</a>
+        <a href="/" aria-current=($global.route === "/" && "page")>Home</a>
+        <a href="/messages" aria-current=($global.route === "/messages" && "page")>Example</a>
       </nav>
+      <ThemeSwitch/>
     </header>
     <${input.content}/>
   </body>

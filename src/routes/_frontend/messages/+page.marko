@@ -1,6 +1,9 @@
 import MessageBoard from "#frontend/messages/presentation/view/message-board/MessageBoard.marko";
+import "./messages-page.scss";
 
-<main>
-  <h1>Messages</h1>
+<main class="messages-page">
+  <p class="eyebrow">The context messages</p>
+  <h1>Example</h1>
+  <p class="lead">Add, edit and remove messages. The backend keeps them in <code>tmp/messages.json</code>.</p>
   <${MessageBoard}/>
 </main>

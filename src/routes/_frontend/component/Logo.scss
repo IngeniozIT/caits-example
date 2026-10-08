@@ -1,0 +1,4 @@
+// The colors of the logo come from the theme of the app. Without a theme, the logo keeps the light colors.
+// pathLength="1" lets a page draw the logo: a dash of length 1 covers each path.
+.caits-arch { fill: var(--caits-primary, #3730A3); }
+.caits-key  { fill: var(--caits-accent,  #0F766E); }

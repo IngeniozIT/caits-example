@@ -1,0 +1,13 @@
+// The Sass values of the app: the widths, and the grain. Each stylesheet of the routes loads them by their name, from any folder: `@use "values"`,
+// then `values.$page`. This file gives no CSS: a stylesheet that loads it does not repeat CSS of the app.
+// The views and the components of the contexts do not load it: they read the CSS variables of the theme (_theme.scss).
+
+// The width of the content of a page.
+$page: 68rem;
+// Under this width, the blocks that stand side by side go one under the other.
+$narrow: 56rem;
+// The width of a phone.
+$phone: 36rem;
+
+// A fine grain, as on paper: a noise that the browser draws from this text. No image to load.
+$grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");

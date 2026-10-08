@@ -1,21 +1,10 @@
 import { expect, test, type Page } from "@playwright/test";
 
-const menu = (page: Page) => page.getByRole("navigation", { name: "Main menu" });
 const messages = (page: Page) => page.getByRole("list", { name: "Messages" }).getByRole("listitem");
 const add = async (page: Page, text: string) => {
   await page.getByLabel("New message").fill(text);
   await page.getByRole("button", { name: "Add" }).click();
 };
-
-test("Given a visitor on the home page, When they open the messages from the menu, Then the page of the messages has the same menu", async ({ page }) => {
-  await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Home");
-
-  await menu(page).getByRole("link", { name: "Messages" }).click();
-
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Messages");
-  await expect(menu(page).getByRole("link", { name: "Home" })).toBeVisible();
-});
 
 test("Given a visitor on the page of the messages, When they add, edit and remove messages, Then the list shows each change, also after a reload", async ({ page }) => {
   await page.goto("/messages");

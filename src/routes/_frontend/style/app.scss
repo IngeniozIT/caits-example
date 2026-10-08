@@ -1,0 +1,18 @@
+// The stylesheet of the app: the CSS of all the pages. The layout imports it: Sass compiles it into one CSS, with all the files that it
+// loads. A partial (a file whose name starts with "_") is not compiled alone: its CSS comes here, at the place of its @use. Thus the
+// order of the @use is the order of the CSS: the fonts and the theme, the elements of HTML, then the parts of each page.
+// A partial loads the partials that it needs (@use "values"): Sass puts the CSS of each file in the CSS once only.
+// A page imports its own stylesheet, next to it: only this page loads it. So does a component, or a View: the pages that show it
+// load its CSS.
+
+// The fonts come from npm packages: the build puts their files in the app. A module takes the name of its file, and 400-italic is not
+// a valid name: `as` gives it another.
+@use "@fontsource-variable/geist";
+@use "@fontsource-variable/geist-mono";
+@use "@fontsource/instrument-serif";
+@use "@fontsource/instrument-serif/400-italic.css" as instrument-serif-italic;
+
+@use "theme";
+@use "elements";
+@use "page";
+@use "menu";

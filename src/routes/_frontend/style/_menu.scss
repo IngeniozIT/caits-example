@@ -1,0 +1,69 @@
+// The menu: a bar of glass that floats over the page. The link of the page that shows has aria-current="page".
+@use "values";
+
+body > header {
+  position: sticky;
+  top: 0.75rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: min(100% - 1.5rem, values.$page + 2rem);
+  margin: 0.75rem auto 0;
+  padding: 0.4rem 0.4rem 0.4rem 1rem;
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px) saturate(1.6);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6);
+
+  // The name of the app, after its logo, in the colors of the logo: the indigo of the arch, then the teal of the keystone.
+  > a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 650;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+
+    svg {
+      width: 1.75rem;
+      height: auto;
+    }
+
+    span {
+      background: linear-gradient(100deg, var(--caits-primary), var(--caits-accent));
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+  }
+
+  nav {
+    display: flex;
+    margin-left: auto;
+    gap: 0.2rem;
+    padding: 0.2rem;
+    background: color-mix(in srgb, var(--ink) 5%, transparent);
+    border-radius: 999px;
+
+    a {
+      padding: 0.4rem 0.95rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--ink-muted);
+      text-decoration: none;
+      border-radius: 999px;
+      transition: color 0.2s, background 0.2s, box-shadow 0.2s;
+
+      &:hover { color: var(--ink); }
+
+      &[aria-current="page"] {
+        color: var(--ink);
+        background: var(--surface);
+        box-shadow: 0 1px 3px rgb(23 21 59 / 0.12), 0 0 0 1px var(--hairline);
+      }
+    }
+  }
+}

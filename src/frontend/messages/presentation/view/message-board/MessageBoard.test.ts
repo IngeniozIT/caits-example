@@ -188,23 +188,24 @@ describe("MessageBoard store → HTML", () => {
     expect(items(container)).toEqual(["Hello", "Bye"]);
   });
 
-  test("while a change is on its way, the fields are read-only and the buttons wait for it", async () => {
+  test("while a change is on its way, the board is busy, the fields are read-only and the buttons wait for it", async () => {
     const { events, mount } = setup();
     const { container } = await mount(new MessagesLoaded([hello, bye]));
     await click(button(itemOf(container, "Hello"), "Edit"));
     const waiting = () => [
+      container.querySelector('[aria-busy="true"]') !== null,
       additionField(container).readOnly,
       editor(container, "m1")?.readOnly,
       ...[button(container, "Add"), button(container, "Save"), button(itemOf(container, "Bye"), "Edit"), button(itemOf(container, "Bye"), "Remove")].map(target => target.disabled)
     ];
-    expect(waiting()).toEqual([false, false, false, false, false, false]);
+    expect(waiting()).toEqual([false, false, false, false, false, false, false]);
 
     await add(container, "Third");
-    expect(waiting()).toEqual([true, true, true, true, true, true]);
+    expect(waiting()).toEqual([true, true, true, true, true, true, true]);
 
     events.publish(new MessagesChangeFailed("addition", "HTTP 500"));
     await settle();
-    expect(waiting()).toEqual([false, false, false, false, false, false]);
+    expect(waiting()).toEqual([false, false, false, false, false, false, false]);
   });
 
   test("an addition that succeeds empties the field", async () => {

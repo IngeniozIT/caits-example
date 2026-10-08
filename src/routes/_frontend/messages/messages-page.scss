@@ -1,0 +1,8 @@
+// The stylesheet of the page Messages: messages/+page.marko imports it, and only this page loads it. A narrower column, for the
+// board of the context messages.
+
+.messages-page {
+  width: min(100% - 2rem, 46rem);
+
+  h1 { margin: 1.25rem 0 1.25rem; }
+}

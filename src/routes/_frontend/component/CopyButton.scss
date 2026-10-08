@@ -1,0 +1,23 @@
+// The button that copies: small and quiet, without the color of the other buttons. It lives in the terminals of the home page, which
+// are dark in the two themes: it takes their colors.
+.copy-button {
+  flex-shrink: 0;
+  height: 1.6rem;
+  padding: 0 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #A3A7CB;
+  background: rgb(255 255 255 / 0.04);
+  border: 1px solid rgb(101 116 248 / 0.25);
+  border-radius: 0.5rem;
+  box-shadow: none;
+
+  &:hover:not(:disabled) {
+    color: #ECEDFB;
+    background: rgb(255 255 255 / 0.08);
+    filter: none;
+    transform: none;
+  }
+}

@@ -1,0 +1,435 @@
+// The stylesheet of the home page: +page.marko imports it, and only this page loads it. The welcome, the logo on its glass, the
+// guarantees of the harness with the list of the checks, the first steps and the commands, then the work with an AI agent. Each class of the page starts with the
+// name of the page, home-page: a class of the app has one meaning.
+@use "values";
+
+// The glass under the logo: the white of milk, and its edge, which catches the light. The dark theme dims them.
+@mixin glass-light {
+  --glass-milk: rgb(255 253 248 / 0.75);
+  --glass-edge: rgb(255 255 255 / 0.7);
+}
+
+@mixin glass-dark {
+  --glass-milk: rgb(255 255 255 / 0.03);
+  --glass-edge: rgb(255 255 255 / 0.08);
+}
+
+// A card: a guarantee of the harness, or a first step.
+@mixin card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: calc(var(--radius) * 1.25);
+
+  h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    font-size: 0.925rem;
+    line-height: 1.55;
+    color: var(--ink-muted);
+  }
+
+  // A path breaks where it must: it never leaves its card.
+  code { overflow-wrap: anywhere; }
+}
+
+.home-page {
+  &__hero {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    align-items: center;
+    gap: clamp(2.5rem, 6vw, 5rem);
+
+    @media (max-width: values.$narrow) { grid-template-columns: 1fr; }
+
+    h1 { margin: 1.25rem 0 1.5rem; }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin-top: 2.25rem;
+  }
+
+  &__prompt {
+    padding: 0;
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    background: none;
+
+    &::before {
+      content: "$ ";
+      color: var(--caits-accent);
+    }
+  }
+
+  // The logo on a card of frosted glass, with a fine grain. No color but those of the logo.
+  &__emblem {
+    @include glass-light;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    margin: 0;
+    padding: clamp(2rem, 4vw, 3rem) 1.5rem 2.25rem;
+    background: linear-gradient(180deg, var(--glass-milk), color-mix(in srgb, var(--surface) 40%, transparent));
+    border: 1px solid var(--glass-edge);
+    border-radius: calc(var(--radius) * 2);
+    box-shadow: inset 0 1px 0 var(--glass-edge), var(--shadow);
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: values.$grain 0 0 / 160px;
+      opacity: 0.16;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) & { @include glass-dark; }
+    }
+    [data-theme="dark"] & { @include glass-dark; }
+  }
+
+  // The arch draws itself, takes its colors, then floats.
+  &__arch {
+    position: relative;
+    width: min(62%, 16rem);
+    margin: 0 auto 2rem;
+
+    svg {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      animation: home-page-float 7s ease-in-out 3s infinite;
+
+      .caits-arch, .caits-key {
+        stroke: var(--caits-primary);
+        stroke-width: 0.4;
+        stroke-dasharray: 1;
+        animation: home-page-draw 2.4s var(--ease) 0.3s backwards, home-page-fill 1s ease 1.8s backwards;
+      }
+      .caits-key { stroke: var(--caits-accent); }
+    }
+  }
+
+  // What CAITS stands for: the initials take the teal of the keystone.
+  &__name {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 3vw, 1.85rem);
+    line-height: 1.2;
+    text-align: center;
+
+    b {
+      font-weight: inherit;
+      color: var(--caits-accent);
+    }
+  }
+
+  // A section after the hero: its eyebrow, its title, then its content. The menu floats over the top of the page: a link to a section
+  // stops under the menu.
+  &__section {
+    margin-top: clamp(5rem, 10vw, 7.5rem);
+    scroll-margin-top: 5rem;
+
+    h2 { margin: 1rem 0 2.5rem; }
+  }
+
+  // The guarantees of the harness: three cards. The first one lists the checks: it takes the left, the two others stand on its right.
+  &__promises {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @media (max-width: values.$narrow) { grid-template-columns: 1fr; }
+
+    > li { @include card; }
+
+    > li:first-child {
+      grid-row: span 2;
+
+      @media (max-width: values.$narrow) { grid-row: auto; }
+    }
+  }
+
+  // The checks: one line each, its mark, its name, then what it catches.
+  &__checks {
+    margin: 0.5rem 0 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      display: grid;
+      grid-template-columns: 1.25rem 7.5rem 1fr;
+      align-items: baseline;
+      padding: 0.7rem 0;
+      font-size: 0.925rem;
+      line-height: 1.45;
+      border-top: 1px solid var(--hairline);
+
+      @media (max-width: values.$phone) { grid-template-columns: 1.25rem 1fr; }
+
+      &::before {
+        content: "✓";
+        font-weight: 600;
+        color: var(--caits-accent);
+      }
+    }
+
+    strong { font-weight: 600; }
+
+    span {
+      color: var(--ink-muted);
+
+      @media (max-width: values.$phone) { grid-column: 2; }
+    }
+
+    b {
+      font-weight: 600;
+      color: var(--caits-accent);
+    }
+  }
+
+  // The first steps: the step that is done already, three numbered cards, each with its time, then the commands of every day.
+  &__steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+
+    @media (max-width: values.$narrow) { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: values.$phone) { grid-template-columns: 1fr; }
+
+    > li {
+      @include card;
+      counter-increment: step;
+      transition: transform 0.25s var(--ease), box-shadow 0.25s, border-color 0.25s;
+
+      &::before {
+        content: "0" counter(step);
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--caits-accent);
+      }
+
+      &:hover:not(.home-page__done) {
+        transform: translateY(-2px);
+        border-color: color-mix(in srgb, var(--caits-primary) 25%, transparent);
+        box-shadow: var(--shadow);
+      }
+
+      // The step that is done already: its mark in place of a number, on the paper, without a card.
+      &.home-page__done {
+        counter-increment: none;
+        background: transparent;
+        border-style: dashed;
+
+        &::before { content: "✓"; }
+
+        h3 { color: var(--ink-muted); }
+      }
+    }
+
+    // The title of a card can be a link: all the card takes the click.
+    a {
+      color: inherit;
+      text-decoration: none;
+
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+      }
+
+      span {
+        display: inline-block;
+        color: var(--caits-accent);
+        transition: translate 0.25s var(--ease);
+      }
+    }
+
+    li:hover a span { translate: 2px -2px; }
+  }
+
+  // The time of a step, in the top corner of its card.
+  &__time {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1;
+    color: var(--ink-faint);
+  }
+
+  // Why an AI agent works well here: three reasons, each under a line of the colors of the logo, then the prompt.
+  &__reasons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem 2rem;
+    margin: 0 0 2.5rem;
+    padding: 0;
+    list-style: none;
+
+    @media (max-width: values.$narrow) { grid-template-columns: 1fr; }
+
+    li::before {
+      content: "";
+      display: block;
+      width: 2rem;
+      height: 2px;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, var(--caits-primary), var(--caits-accent));
+    }
+
+    h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    p {
+      font-size: 0.925rem;
+      line-height: 1.55;
+      color: var(--ink-muted);
+    }
+  }
+
+  // The commands and the prompt: a terminal, dark in the two themes.
+  &__terminal {
+    margin-top: 1rem;
+    overflow: hidden;
+    color: #D9DBF5;
+    background: #0B0C22;
+    border: 1px solid rgb(101 116 248 / 0.25);
+    border-radius: calc(var(--radius) * 1.25);
+    box-shadow: var(--shadow);
+
+    dl {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 0.5rem 2rem;
+      margin: 0;
+      padding: 1.25rem 1.5rem 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+
+      @media (max-width: values.$phone) {
+        grid-template-columns: 1fr;
+        gap: 0.2rem;
+      }
+    }
+
+    dt {
+      white-space: nowrap;
+
+      &::before {
+        content: "$ ";
+        color: #2DD4BF;
+      }
+    }
+
+    // What a command does, then the button that copies it, at the end of the line.
+    dd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin: 0;
+      color: #8B8FB8;
+
+      @media (max-width: values.$phone) { margin-bottom: 0.6rem; }
+
+      > span::before { content: "# "; }
+    }
+
+    // A prompt to give to an AI agent: one click selects all of it, or the button of the bar copies it.
+    blockquote {
+      margin: 0;
+      padding: 1.25rem 1.5rem 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      line-height: 1.7;
+      user-select: all;
+
+      code {
+        padding: 0;
+        font-size: inherit;
+        color: #2DD4BF;
+        background: none;
+      }
+    }
+  }
+
+  // The bar of a terminal: three lights, its title, then the button that copies the prompt. The two bars have the same height.
+  &__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 2.75rem;
+    padding: 0.55rem 1.1rem;
+    border-bottom: 1px solid rgb(101 116 248 / 0.18);
+
+    p {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #6D7199;
+
+      &::before {
+        content: "";
+        flex-shrink: 0;
+        width: 0.55rem;
+        height: 0.55rem;
+        margin-right: 2.4rem;
+        background: #6574F8;
+        border-radius: 50%;
+        box-shadow: 0.9rem 0 #2DD4BF, 1.8rem 0 #3B3F66;
+      }
+    }
+  }
+}
+
+@keyframes home-page-draw {
+  from { stroke-dashoffset: 1; }
+}
+
+@keyframes home-page-fill {
+  from { fill-opacity: 0; }
+}
+
+// The logo floats, as on water.
+@keyframes home-page-float {
+  50% { transform: translateY(-6px); }
+}

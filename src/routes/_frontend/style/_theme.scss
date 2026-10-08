@@ -1,0 +1,54 @@
+// The theme: the colors and the fonts of the app, as CSS variables. The pages, the components and the views read them with var().
+// The colors come from the logo: the indigo of the arch, the teal of the keystone, on a paper of warm stone (light) or of ink (dark).
+// They follow the system; data-theme="light" or "dark" on <html> forces one.
+
+@mixin light {
+  --caits-primary: #3730A3;
+  --caits-accent: #0F766E;
+  --button: #3730A3;
+  --paper: #F6F4EF;
+  --surface: #FFFFFF;
+  --ink: #17153B;
+  --ink-muted: #585B7A;
+  --ink-faint: #8B8EA8;
+  --hairline: rgb(55 48 163 / 0.12);
+  --grid: rgb(55 48 163 / 0.055);
+  --glow-primary: rgb(55 48 163 / 0.16);
+  --glow-accent: rgb(15 118 110 / 0.14);
+  --danger: #B42318;
+  --shadow: 0 1px 2px rgb(23 21 59 / 0.05), 0 16px 40px -18px rgb(23 21 59 / 0.22);
+  color-scheme: light;
+}
+
+@mixin dark {
+  --caits-primary: #6574F8;
+  --caits-accent: #2DD4BF;
+  --button: #4F5BD5;
+  --paper: #07081A;
+  --surface: #0F112A;
+  --ink: #ECEDFB;
+  --ink-muted: #A3A7CB;
+  --ink-faint: #6D7199;
+  --hairline: rgb(101 116 248 / 0.2);
+  --grid: rgb(101 116 248 / 0.07);
+  --glow-primary: rgb(101 116 248 / 0.24);
+  --glow-accent: rgb(45 212 191 / 0.13);
+  --danger: #FF8A7A;
+  --shadow: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 24px 48px -24px rgb(0 0 0 / 0.7);
+  color-scheme: dark;
+}
+
+:root {
+  @include light;
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, "SF Mono", monospace;
+  --radius: 1rem;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { @include dark; }
+}
+
+[data-theme="dark"] { @include dark; }

@@ -1,0 +1,52 @@
+// The parts of each page: its width, the eyebrow above a title, the lead under it, and the rise of its blocks.
+@use "values";
+
+main {
+  width: min(100% - 2rem, values.$page);
+  margin: 0 auto;
+  padding: clamp(3rem, 8vw, 6rem) 0 6rem;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--caits-accent);
+
+  // A small keystone, of the colors of the logo.
+  &::before {
+    content: "";
+    width: 0.6rem;
+    height: 0.7rem;
+    background: linear-gradient(180deg, var(--caits-accent), var(--caits-primary));
+    clip-path: polygon(0 0, 100% 0, 75% 100%, 25% 100%);
+  }
+}
+
+.lead {
+  max-width: 36rem;
+  font-size: 1.15rem;
+  line-height: 1.65;
+  color: var(--ink-muted);
+}
+
+// The content of a page rises into place, one block after the other. Not for the users who ask for less motion.
+@media (prefers-reduced-motion: no-preference) {
+  main > * { animation: rise 0.8s var(--ease) backwards; }
+
+  @for $block from 2 through 6 {
+    main > :nth-child(#{$block}) { animation-delay: ($block - 1) * 0.08s; }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+}
