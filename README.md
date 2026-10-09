@@ -18,3 +18,7 @@ The other files stay here. This repository is not a project: it has no tools of 
 ## The versions
 
 Each version of CAITS writes the example of the same tag here: CAITS `v0.4.0` writes the example of `v0.4.0`. When you tag a version of CAITS, tag the same version here.
+
+## License
+
+[0BSD](LICENSE): use, copy, change and share this code for any purpose, without asking, and without keeping this notice.

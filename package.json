@@ -2,6 +2,7 @@
   "name": "caits-example",
   "private": true,
   "description": "The example app of CAITS: the files that `caits init --example` writes.",
+  "license": "0BSD",
   "dependencies": {
     "@fontsource-variable/geist": "^5.3.0",
     "@fontsource-variable/geist-mono": "^5.3.0",
