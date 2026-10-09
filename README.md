@@ -6,7 +6,7 @@ The small app that `caits init --example` writes: a home page, a menu, and a pag
 npx github:IngeniozIT/caits#v0.4.0 init my-app --example
 ```
 
-The [wiki of CAITS](https://github.com/IngeniozIT/caits/blob/main/wiki/Example.md) tells the app layer by layer.
+The [documentation of CAITS](https://caits.dev/docs/example) tells the app layer by layer.
 
 ## What `init` takes from this repository
 
