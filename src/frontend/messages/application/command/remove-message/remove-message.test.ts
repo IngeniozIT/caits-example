@@ -1,4 +1,4 @@
-import { applicationScenario, describe, expect, test } from "@ingeniozit/caits/testing/frontend/application";
+import { applicationScenario, describe, expect, test } from "caits/testing/frontend/application";
 import { MessagesChanged } from "#context/application/event/MessagesChanged.js";
 import { MessagesChangeFailed } from "#context/application/event/MessagesChangeFailed.js";
 import { Message } from "#context/domain/entity/Message.js";
@@ -18,10 +18,10 @@ describe("remove message", () => {
   });
 
   test("a refusal of the server is announced with its reason", async ({ app }) => {
-    app.use(MessagesGateway, new FakeMessagesGateway([new Message("m1", "Hello")])).refuseWith("HTTP 500");
+    app.use(MessagesGateway, new FakeMessagesGateway([new Message("m1", "Hello")])).refuseWith("There is no message with the id m1.");
 
     await applicationScenario(app)
       .givenTheDto(new RemoveMessageCommand("m1"))
-      .expectItToPublish(new MessagesChangeFailed("removal", "HTTP 500"));
+      .expectItToPublish(new MessagesChangeFailed("removal", "There is no message with the id m1."));
   });
 });

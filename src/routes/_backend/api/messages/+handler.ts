@@ -1,4 +1,4 @@
-import { controller } from "@ingeniozit/caits/di/backend";
+import { controller } from "caits/di/backend";
 import { AddMessageHttpController } from "#backend/messages/presentation/add-message-http/add-message-http.controller.js";
 import { ListMessagesHttpController } from "#backend/messages/presentation/list-messages-http/list-messages-http.controller.js";
 

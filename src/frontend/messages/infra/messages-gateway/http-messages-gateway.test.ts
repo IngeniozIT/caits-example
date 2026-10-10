@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, test, vi } from "@ingeniozit/caits/testing/frontend/infra";
+import { afterEach, describe, expect, test, vi } from "caits/testing/frontend/infra";
 import { describeMessagesGatewayContract } from "#context/domain/port/messages-gateway/MessagesGateway.contract.js";
 import { HttpMessagesGateway } from "./http-messages-gateway.js";
 
@@ -9,7 +9,8 @@ describeMessagesGatewayContract("Http", ({ messages, unavailable, refusal }) => 
   let held = messages.map(({ id, text }) => ({ id, text }));
   vi.stubGlobal("fetch", vi.fn(async (url: string, init?: RequestInit) => {
     const method = init?.method ?? "GET";
-    if (method === "GET") return unavailable ? new Response("down", { status: 503 }) : Response.json({ messages: held });
+    if (unavailable) return new Response("down", { status: 503 });
+    if (method === "GET") return Response.json({ messages: held });
     if (refusal !== undefined) return Response.json({ type: "urn:caits:problem:invalid-message", title: "Invalid message", status: 422, detail: refusal }, { status: 422 });
     const id = decodeURIComponent(url.split("/").at(-1) ?? "");
     const text = method === "DELETE" ? "" : (JSON.parse(init?.body as string) as { text: string }).text;

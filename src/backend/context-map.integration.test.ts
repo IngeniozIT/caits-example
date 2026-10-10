@@ -1,7 +1,7 @@
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, describe, expect, productionBackend, test, vi } from "@ingeniozit/caits/testing/backend/integration";
+import { afterEach, describe, expect, productionBackend, test, vi } from "caits/testing/backend/integration";
 import { AddMessageCommand } from "./messages/application/command/add-message/add-message.dto.js";
 import { EditMessageCommand } from "./messages/application/command/edit-message/edit-message.dto.js";
 import { RemoveMessageCommand } from "./messages/application/command/remove-message/remove-message.dto.js";
@@ -35,9 +35,9 @@ describe("the backend, on the production bindings", () => {
     expect((await second.send(new ListMessagesQuery())).messages.map(message => message.text)).toEqual(["Bye"]);
   });
 
-  test("without DATA_DIR, the data folder is tmp, in the working folder", async () => {
+  test.for([undefined, ""])("without DATA_DIR (%j), the data folder is tmp, in the working folder", async dataDirectory => {
     directory = await mkdtemp(join(tmpdir(), "messages-"));
-    vi.stubEnv("DATA_DIR", undefined);
+    vi.stubEnv("DATA_DIR", dataDirectory);
     const workingDirectory = process.cwd();
     process.chdir(directory);
     try {

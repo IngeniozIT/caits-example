@@ -1,4 +1,4 @@
-import { describe, presentationScenario, test } from "@ingeniozit/caits/testing/backend/presentation";
+import { describe, presentationScenario, test } from "caits/testing/backend/presentation";
 import { RemoveMessageCommand, RemoveMessageOutput } from "#context/application/command/remove-message/remove-message.dto.js";
 import { MessageNotFoundError } from "#context/domain/error/MessageNotFoundError.js";
 

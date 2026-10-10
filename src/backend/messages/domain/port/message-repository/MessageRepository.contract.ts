@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@ingeniozit/caits/testing/backend/infra";
+import { describe, expect, test } from "caits/testing/backend/infra";
 import { Message } from "#context/domain/entity/Message.js";
 import type { MessageRepository } from "./MessageRepository.js";
 
@@ -48,6 +48,27 @@ export function describeMessageRepositoryContract(name: string, create: () => Pr
       await repository.save(Message.create("2", "second"));
       await repository.remove("1");
       expect(await contentOf(repository)).toEqual([["2", "second"]]);
+    });
+
+    test("removing an id that no message has changes nothing, and is not an error", async () => {
+      const repository = await create();
+      await repository.save(Message.create("1", "first"));
+      await repository.remove("2");
+      expect(await contentOf(repository)).toEqual([["1", "first"]]);
+    });
+
+    test("saves that run at the same time keep all their messages, in the order of the calls", async () => {
+      const repository = await create();
+      const ids = Array.from({ length: 20 }, (_, index) => String(index));
+      await Promise.all(ids.map(id => repository.save(Message.create(id, `message ${id}`))));
+      expect(await contentOf(repository)).toEqual(ids.map(id => [id, `message ${id}`]));
+    });
+
+    test("removals that run at the same time remove all their messages", async () => {
+      const repository = await create();
+      for (const id of ["1", "2", "3", "4"]) await repository.save(Message.create(id, `message ${id}`));
+      await Promise.all(["1", "2", "4"].map(id => repository.remove(id)));
+      expect(await contentOf(repository)).toEqual([["3", "message 3"]]);
     });
   });
 }

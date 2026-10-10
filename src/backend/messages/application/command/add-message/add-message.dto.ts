@@ -1,4 +1,4 @@
-import { Input } from "@ingeniozit/caits/messaging/Input";
+import { Input } from "caits/messaging/Input";
 
 export class AddMessageCommand extends Input<AddMessageOutput> {
   constructor(readonly text: string) { super(); }

@@ -1,4 +1,4 @@
-import { controller } from "@ingeniozit/caits/di/backend";
+import { controller } from "caits/di/backend";
 import { EditMessageHttpController } from "#backend/messages/presentation/edit-message-http/edit-message-http.controller.js";
 import { RemoveMessageHttpController } from "#backend/messages/presentation/remove-message-http/remove-message-http.controller.js";
 

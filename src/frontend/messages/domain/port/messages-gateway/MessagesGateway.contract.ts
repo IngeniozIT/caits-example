@@ -1,8 +1,8 @@
-import { describe, expect, test } from "@ingeniozit/caits/testing/frontend/infra";
+import { describe, expect, test } from "caits/testing/frontend/infra";
 import { Message } from "#context/domain/entity/Message.js";
 import type { MessagesGateway } from "./MessagesGateway.js";
 
-/** The other side: the server, or what stands for it. `refusal`: the reason it refuses every change with. */
+/** The other side: the server, or what stands for it. `unavailable`: nothing reaches it. `refusal`: why it refuses each change. */
 type Server = { messages: Message[]; unavailable?: boolean; refusal?: string };
 
 const textsOf = async (gateway: MessagesGateway) => (await gateway.list()).map(message => message.text);
@@ -14,8 +14,12 @@ export function describeMessagesGatewayContract(name: string, create: (server: S
       expect(await create({ messages: [new Message("m1", "Hello")] }).list()).toStrictEqual([new Message("m1", "Hello")]);
     });
 
-    test("an unavailable other side is an error", async () => {
-      await expect(create({ messages: [], unavailable: true }).list()).rejects.toThrow();
+    test("an unavailable other side is an error, for the list and for each change", async () => {
+      const gateway = create({ messages: [new Message("m1", "Hello")], unavailable: true });
+      await expect(gateway.list()).rejects.toThrow();
+      await expect(gateway.add("Bye")).rejects.toThrow();
+      await expect(gateway.edit("m1", "Hello again")).rejects.toThrow();
+      await expect(gateway.remove("m1")).rejects.toThrow();
     });
 
     test("adds a message: the list then ends with it", async () => {

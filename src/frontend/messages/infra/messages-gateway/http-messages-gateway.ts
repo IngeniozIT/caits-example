@@ -1,5 +1,5 @@
-import type { Fetcher } from "@ingeniozit/caits/di/Fetcher";
-import { failureOf } from "@ingeniozit/caits/http/failureOf";
+import type { Fetcher } from "caits/di/Fetcher";
+import { failureOf } from "caits/http/failureOf";
 import { Message } from "#context/domain/entity/Message.js";
 import type { MessagesGateway } from "#context/domain/port/messages-gateway/MessagesGateway.js";
 

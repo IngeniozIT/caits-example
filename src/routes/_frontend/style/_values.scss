@@ -1,5 +1,5 @@
-// The Sass values of the app: the widths, and the grain. Each stylesheet of the routes loads them by their name, from any folder: `@use "values"`,
-// then `values.$page`. This file gives no CSS: a stylesheet that loads it does not repeat CSS of the app.
+// The Sass values of the app: the widths, and the grain. Each stylesheet of the routes loads them by their name, from any folder:
+// `@use "values"`, then `values.$page`. This file gives no CSS: a stylesheet that loads it does not repeat CSS of the app.
 // The views and the components of the contexts do not load it: they read the CSS variables of the theme (_theme.scss).
 
 // The width of the content of a page.

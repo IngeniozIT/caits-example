@@ -1,4 +1,4 @@
-import { Controller, problem } from "@ingeniozit/caits/messaging/Controller";
+import { Controller, problem } from "caits/messaging/Controller";
 import { RemoveMessageCommand, type RemoveMessageOutput } from "#context/application/command/remove-message/remove-message.dto.js";
 import { MessageNotFoundError } from "#context/domain/error/MessageNotFoundError.js";
 

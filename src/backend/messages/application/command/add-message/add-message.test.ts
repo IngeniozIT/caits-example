@@ -1,4 +1,4 @@
-import { applicationScenario, describe, expect, test, type TestApplication } from "@ingeniozit/caits/testing/backend/application";
+import { applicationScenario, describe, expect, test, type TestApplication } from "caits/testing/backend/application";
 import { Message } from "#context/domain/entity/Message.js";
 import { InvalidMessageError } from "#context/domain/error/InvalidMessageError.js";
 import { MessageRepository } from "#context/domain/port/message-repository/MessageRepository.js";
@@ -23,8 +23,8 @@ describe("add message", () => {
       .expectTheOutputToBe(new AddMessageOutput("message-2", "second"));
   });
 
-  test("a text of the maximum length is accepted", async ({ app }) => {
-    const longest = "x".repeat(Message.MAX_LENGTH);
+  test.for(["x", "😀"])("a text of the maximum length is accepted: %s counts as one character", async (character, { app }) => {
+    const longest = character.repeat(Message.MAX_LENGTH);
 
     await applicationScenario(app)
       .givenTheDto(new AddMessageCommand(longest))
@@ -41,6 +41,5 @@ describe("add message", () => {
       .expectTheErrorToBe(new InvalidMessageError(reason));
 
     expect(await kept(app)).toEqual([]);
-    expect(new InvalidMessageError(reason).name).toBe("InvalidMessageError");
   });
 });

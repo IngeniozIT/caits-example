@@ -1,4 +1,4 @@
-import { applicationScenario, describe, expect, test } from "@ingeniozit/caits/testing/frontend/application";
+import { applicationScenario, describe, expect, test } from "caits/testing/frontend/application";
 import { MessagesChanged } from "#context/application/event/MessagesChanged.js";
 import { MessagesChangeFailed } from "#context/application/event/MessagesChangeFailed.js";
 import { Message } from "#context/domain/entity/Message.js";
@@ -22,6 +22,6 @@ describe("edit message", () => {
 
     await applicationScenario(app)
       .givenTheDto(new EditMessageCommand("m1", " "))
-      .expectItToPublish(new MessagesChangeFailed("edition", "A message cannot be empty."));
+      .expectItToPublish(new MessagesChangeFailed("edit", "A message cannot be empty."));
   });
 });

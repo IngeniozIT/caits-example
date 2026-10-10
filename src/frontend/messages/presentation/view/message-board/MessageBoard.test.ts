@@ -1,9 +1,9 @@
 // @vitest-environment happy-dom
-import { afterEach, describe, expect, globalWith, mountTemplate, settle, test, testPresentation } from "@ingeniozit/caits/testing/frontend/presentation";
+import { afterEach, describe, expect, globalWith, mountTemplate, settle, test, testPresentation } from "caits/testing/frontend/presentation";
 import { AddMessageCommand } from "#context/application/command/add-message/add-message.dto.js";
 import { EditMessageCommand } from "#context/application/command/edit-message/edit-message.dto.js";
 import { RemoveMessageCommand } from "#context/application/command/remove-message/remove-message.dto.js";
-import { MessageEditionRequested } from "#context/application/event/MessageEditionRequested.js";
+import { MessageEditRequested } from "#context/application/event/MessageEditRequested.js";
 import { MessageRemovalRequested } from "#context/application/event/MessageRemovalRequested.js";
 import { MessagesChanged } from "#context/application/event/MessagesChanged.js";
 import { MessagesChangeFailed } from "#context/application/event/MessagesChangeFailed.js";
@@ -111,7 +111,7 @@ describe("MessageBoard action → DTO", () => {
 
     await add(container, "first");
     await add(container, "second");
-    events.publish(new MessageEditionRequested("m1", "x"));
+    events.publish(new MessageEditRequested("m1", "x"));
     events.publish(new MessageRemovalRequested("m1"));
     events.publish(new MessagesChanged());
     await settle();
@@ -234,7 +234,7 @@ describe("MessageBoard store → HTML", () => {
     expect(alerts(container)).toEqual(["A message cannot be empty."]);
   });
 
-  test("an edition that succeeds closes the editor", async () => {
+  test("an edit that succeeds closes the editor", async () => {
     const { events, mount } = setup();
     const { container } = await mount(new MessagesLoaded([hello]));
 
@@ -247,8 +247,8 @@ describe("MessageBoard store → HTML", () => {
   });
 
   test.for([
-    ["edition", "A message cannot be empty."],
-    ["removal", "HTTP 500"]
+    ["edit", "A message cannot be empty."],
+    ["removal", "There is no message with the id m1."]
   ] as const)("an %s that the server refuses is told above the list, not at the field of the addition", async ([change, reason]) => {
     const { events, mount } = setup();
     const { container } = await mount(new MessagesLoaded([hello]));
@@ -261,12 +261,12 @@ describe("MessageBoard store → HTML", () => {
     expect(container.querySelector("#new-message-error")).toBeNull();
   });
 
-  test("an edition that the server refuses keeps the editor open, with the text that the user typed", async () => {
+  test("an edit that the server refuses keeps the editor open, with the text that the user typed", async () => {
     const { events, mount } = setup();
     const { container } = await mount(new MessagesLoaded([hello]));
 
     await edit(container, "m1", "Hello", " ");
-    events.publish(new MessagesChangeFailed("edition", "A message cannot be empty."));
+    events.publish(new MessagesChangeFailed("edit", "A message cannot be empty."));
     await settle();
 
     expect(editor(container, "m1")?.value).toBe(" ");
@@ -330,5 +330,139 @@ describe("MessageBoard as it loads", () => {
     const forms = [...container.querySelectorAll("form")];
     expect(forms).toHaveLength(2);
     expect(forms.map(form => [form.getAttribute("method"), form.getAttribute("action")])).toEqual([[null, null], [null, null]]);
+  });
+});
+
+describe("MessageBoard for a keyboard and a screen reader", () => {
+  const third = new Message("m3", "Third");
+  const focused = () => document.activeElement;
+  const status = (container: Element) => textOf(container.querySelector('[role="status"]'));
+
+  test("Edit gives the focus to the field of the editor; Cancel gives it back to the button Edit of the message", async () => {
+    const { mount } = setup();
+    const { container } = await mount(new MessagesLoaded([hello]));
+
+    await click(button(itemOf(container, "Hello"), "Edit"));
+    expect(focused()).toBe(editor(container, "m1"));
+
+    await click(button(container, "Cancel"));
+    expect(focused()).toBe(button(itemOf(container, "Hello"), "Edit"));
+  });
+
+  test("an edit that succeeds gives the focus back to the button Edit of the message; one that fails, to the field of the editor", async () => {
+    const { events, mount } = setup();
+    const { container } = await mount(new MessagesLoaded([hello]));
+
+    await edit(container, "m1", "Hello", " ");
+    events.publish(new MessagesChangeFailed("edit", "A message cannot be empty."));
+    await settle();
+    expect(focused()).toBe(editor(container, "m1"));
+
+    await submit(editor(container, "m1")?.form);
+    events.publish(new MessagesChanged());
+    await settle();
+    expect(focused()).toBe(button(itemOf(container, "Hello"), "Edit"));
+  });
+
+  test.for([
+    ["Bye", "Third", [hello, third]],
+    ["Third", "Bye", [hello, bye]]
+  ] as const)("once %s is removed, the focus goes to %s: the message after it, else the message before it", async ([removed, next, left]) => {
+    const { events, mount } = setup();
+    const { container } = await mount(new MessagesLoaded([hello, bye, third]));
+
+    await click(button(itemOf(container, removed), "Remove"));
+    events.publish(new MessagesChanged());
+    await settle();
+    events.publish(new MessagesLoaded([...left]));
+    await settle();
+
+    expect(focused()).toBe(button(itemOf(container, next), "Edit"));
+  });
+
+  test("once the last message is removed, the focus goes to the field of the addition", async () => {
+    const { events, mount } = setup();
+    const { container } = await mount(new MessagesLoaded([hello]));
+
+    await click(button(itemOf(container, "Hello"), "Remove"));
+    events.publish(new MessagesChanged());
+    await settle();
+    events.publish(new MessagesLoaded([]));
+    await settle();
+
+    expect(focused()).toBe(additionField(container));
+  });
+
+  test("a removal that fails gives the focus back to the button Remove of the message", async () => {
+    const { events, mount } = setup();
+    const { container } = await mount(new MessagesLoaded([hello, bye]));
+
+    await click(button(itemOf(container, "Bye"), "Remove"));
+    events.publish(new MessagesChangeFailed("removal", "There is no message with the id m2."));
+    await settle();
+
+    expect(focused()).toBe(button(itemOf(container, "Bye"), "Remove"));
+  });
+
+  test.for([new MessagesChanged(), new MessagesChangeFailed("addition", "A message cannot be empty.")])("each addition gives the focus back to its field, once it is answered (%o)", async answer => {
+    const { events, mount } = setup();
+    const { container } = await mount();
+
+    for (const text of ["Hello", "Bye"]) {
+      await add(container, text);
+      (document.activeElement as HTMLElement | null)?.blur();
+      events.publish(answer);
+      await settle();
+
+      expect(focused()).toBe(additionField(container));
+    }
+  });
+
+  test("an answer to a change that the board did not ask for leaves the focus where it is", async () => {
+    const { events, mount } = setup();
+    await mount(new MessagesLoaded([hello]));
+
+    events.publish(new MessageRemovalRequested("m1"));
+    events.publish(new MessagesChanged());
+    await settle();
+
+    expect(focused()).toBe(document.body);
+  });
+
+  test.for([
+    ["added", async (container: Element) => { await add(container, "Bye"); }],
+    ["changed", async (container: Element) => { await edit(container, "m1", "Hello", "Hello again"); }],
+    ["removed", async (container: Element) => { await click(button(itemOf(container, "Hello"), "Remove")); }]
+  ] as const)("a status tells the screen readers that the message was %s; the next change empties it", async ([done, change]) => {
+    const { events, mount } = setup();
+    const { container } = await mount(new MessagesLoaded([hello]));
+    expect(status(container)).toBe("");
+
+    await change(container);
+    events.publish(new MessagesChanged());
+    await settle();
+    expect(status(container)).toBe(`Message ${done}.`);
+
+    await add(container, "Next");
+    expect(status(container)).toBe("");
+  });
+
+  test("a change that fails is told by its alert, not by the status", async () => {
+    const { events, mount } = setup();
+    const { container } = await mount();
+
+    await add(container, " ");
+    events.publish(new MessagesChangeFailed("addition", "A message cannot be empty."));
+    await settle();
+
+    expect(status(container)).toBe("");
+  });
+
+  test("the buttons of a message are described by its text: a screen reader tells which message they change", async () => {
+    const { mount } = setup();
+    const { container } = await mount(new MessagesLoaded([hello, bye]));
+    const descriptionOf = (target: HTMLButtonElement) => textOf(document.getElementById(target.getAttribute("aria-describedby") ?? ""));
+
+    expect([button(itemOf(container, "Hello"), "Edit"), button(itemOf(container, "Bye"), "Remove")].map(descriptionOf)).toEqual(["Hello", "Bye"]);
   });
 });

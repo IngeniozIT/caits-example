@@ -1,21 +1,34 @@
 import "./CopyButton.scss";
 
 // The button that copies the text of an element of the page (target: its id), with its spaces collapsed: a command, or a prompt. Its
-// label names what it copies. Then it says "Copied" for two seconds, also to a screen reader.
+// label names what it copies. Then it says "Copied", or "Copy failed", for two seconds, also to a screen reader.
 
 export interface Input {
   target: string;
   label: string;
 }
 
-<let/copied=false>
+// Copies the text, and tells if the copy succeeded. A page on plain HTTP has no clipboard, and the browser can refuse the copy.
+static async function copy(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
-<button type="button" class="copy-button" aria-label=input.label onClick() {
+<let/result=undefined as "Copied" | "Copy failed" | undefined>
+<let/timer=undefined as ReturnType<typeof setTimeout> | undefined>
+
+<button type="button" class="copy-button" aria-label=(result ?? input.label) onClick() {
   const text = document.getElementById(input.target)?.textContent?.replace(/\s+/g, " ").trim() ?? "";
-  void navigator.clipboard.writeText(text).then(() => {
-    copied = true;
-    setTimeout(() => { copied = false; }, 2000);
+  void copy(text).then(copied => {
+    // A second click starts the two seconds again.
+    clearTimeout(timer);
+    result = copied ? "Copied" : "Copy failed";
+    timer = setTimeout(() => { result = undefined; }, 2000);
   });
 }>
-  <span aria-live="polite">${copied ? "Copied" : "Copy"}</span>
+  <span aria-live="polite">${result ?? "Copy"}</span>
 </button>

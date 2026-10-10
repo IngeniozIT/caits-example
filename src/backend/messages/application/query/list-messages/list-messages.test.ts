@@ -1,4 +1,4 @@
-import { applicationScenario, describe, test } from "@ingeniozit/caits/testing/backend/application";
+import { applicationScenario, describe, test } from "caits/testing/backend/application";
 import { Message } from "#context/domain/entity/Message.js";
 import { MessageRepository } from "#context/domain/port/message-repository/MessageRepository.js";
 import { ListMessagesOutput, ListMessagesQuery } from "./list-messages.dto.js";

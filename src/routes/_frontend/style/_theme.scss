@@ -1,6 +1,7 @@
 // The theme: the colors and the fonts of the app, as CSS variables. The pages, the components and the views read them with var().
 // The colors come from the logo: the indigo of the arch, the teal of the keystone, on a paper of warm stone (light) or of ink (dark).
-// They follow the system; data-theme="light" or "dark" on <html> forces one.
+// They follow the system; data-theme="light" or "dark" on <html> forces one. Each color of text has a contrast of 4.5:1 or more on
+// the paper and on the surface.
 
 @mixin light {
   --caits-primary: #3730A3;
@@ -10,7 +11,7 @@
   --surface: #FFFFFF;
   --ink: #17153B;
   --ink-muted: #585B7A;
-  --ink-faint: #8B8EA8;
+  --ink-faint: #696C8A;
   --hairline: rgb(55 48 163 / 0.12);
   --grid: rgb(55 48 163 / 0.055);
   --glow-primary: rgb(55 48 163 / 0.16);
@@ -28,7 +29,7 @@
   --surface: #0F112A;
   --ink: #ECEDFB;
   --ink-muted: #A3A7CB;
-  --ink-faint: #6D7199;
+  --ink-faint: #787CA4;
   --hairline: rgb(101 116 248 / 0.2);
   --grid: rgb(101 116 248 / 0.07);
   --glow-primary: rgb(101 116 248 / 0.24);

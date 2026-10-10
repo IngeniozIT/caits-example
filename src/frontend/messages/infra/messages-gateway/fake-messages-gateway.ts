@@ -10,8 +10,8 @@ export class FakeMessagesGateway implements MessagesGateway {
 
   constructor(messages: Message[] = []) { this.held = [...messages]; }
 
-  /** From now on, listing the messages fails with this message. */
-  failWith(message: string): void { this.failure = message; }
+  /** From now on, the server cannot be reached: listing the messages and each change fail, for this reason. */
+  failWith(reason: string): void { this.failure = reason; }
 
   /** From now on, every change is refused, for this reason. */
   refuseWith(reason: string): void { this.refusal = reason; }
@@ -36,6 +36,7 @@ export class FakeMessagesGateway implements MessagesGateway {
   }
 
   private change(apply: () => void): Promise<void> {
+    if (this.failure !== undefined) return Promise.reject(new Error(this.failure));
     if (this.refusal !== undefined) return Promise.reject(new Error(this.refusal));
     apply();
     return Promise.resolve();

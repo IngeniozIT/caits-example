@@ -1,4 +1,4 @@
-import { describe, presentationScenario, test } from "@ingeniozit/caits/testing/backend/presentation";
+import { describe, presentationScenario, test } from "caits/testing/backend/presentation";
 import { EditMessageCommand, EditMessageOutput } from "#context/application/command/edit-message/edit-message.dto.js";
 import { InvalidMessageError } from "#context/domain/error/InvalidMessageError.js";
 import { MessageNotFoundError } from "#context/domain/error/MessageNotFoundError.js";
@@ -14,8 +14,15 @@ describe("editing a message over HTTP", () => {
       .expectTheResponseToBe(200, { id: "message 1", text: "Hello again" });
   });
 
+  test("refuses a body that is not JSON", async ({ app }) => {
+    await presentationScenario(app)
+      .givenTheRequest("PUT", "/api/messages/m1", "{not json")
+      .expectTheResponseToBe(400, { type: "urn:caits:problem:invalid-request-body", title: "Invalid request body", status: 400, detail: "Invalid JSON" }, problemHeaders);
+  });
+
   test.for([
     { scenario: "the text is not a string", requestBody: { text: 5 } },
+    { scenario: "the text is missing", requestBody: {} },
     { scenario: "the body is null", requestBody: null }
   ])("refuses the request when $scenario, and tells why", async ({ requestBody }, { app }) => {
     await presentationScenario(app)

@@ -66,4 +66,15 @@ body > header {
       }
     }
   }
+
+  // On a phone, the menu takes less space: at 320 pixels, the theme switch stays in the bar.
+  @media (max-width: values.$phone) {
+    gap: 0.25rem;
+    padding-left: 0.75rem;
+
+    nav a {
+      padding: 0.4rem 0.5rem;
+      font-size: 0.85rem;
+    }
+  }
 }

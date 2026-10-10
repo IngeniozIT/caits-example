@@ -6,11 +6,14 @@ export class Message {
 
   private constructor(readonly id: string, readonly text: string) {}
 
-  /** A new message. The domain refuses a text that is not valid: the error tells the user why. */
+  /**
+   * A new message. The domain refuses a text that is not valid: the error tells the user why. A character is a code point of Unicode:
+   * an emoji such as 😀 is one character, also if JavaScript gives it a length of 2.
+   */
   static create(id: string, text: string): Message {
     const trimmed = text.trim();
     if (trimmed === "") throw new InvalidMessageError("A message cannot be empty.");
-    if (trimmed.length > Message.MAX_LENGTH) throw new InvalidMessageError(`A message has at most ${Message.MAX_LENGTH} characters.`);
+    if ([...trimmed].length > Message.MAX_LENGTH) throw new InvalidMessageError(`A message has at most ${Message.MAX_LENGTH} characters.`);
     return new Message(id, trimmed);
   }
 

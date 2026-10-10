@@ -1,4 +1,4 @@
-import { settled, type Settled } from "@ingeniozit/caits/state/Loadable";
+import { settled, type Settled } from "caits/state/Loadable";
 import type { Message } from "#context/domain/entity/Message.js";
 import type { Change, MessagesState } from "#context/presentation/store/messagesStore.js";
 
@@ -11,7 +11,7 @@ export type MessageBoardViewModel = {
   pending: Change | undefined;
   /** Why the server refused the last addition: the form of the addition shows it. */
   additionError: string | undefined;
-  /** Why the server refused the last edition or removal: the board shows it above the list. */
+  /** Why the server refused the last edit or removal: the board shows it above the list. */
   changeError: string | undefined;
 };
 
@@ -26,8 +26,8 @@ export function presentMessageBoard(state: MessagesState): MessageBoardViewModel
   return {
     list,
     pending: change.status === "pending" ? change.change : undefined,
-    additionError: change.status === "failed" && change.change === "addition" ? change.message : undefined,
-    changeError: change.status === "failed" && change.change !== "addition" ? change.message : undefined
+    additionError: change.status === "failed" && change.change === "addition" ? change.reason : undefined,
+    changeError: change.status === "failed" && change.change !== "addition" ? change.reason : undefined
   };
 }
 

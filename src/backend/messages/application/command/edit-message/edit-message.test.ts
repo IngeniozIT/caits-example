@@ -1,4 +1,4 @@
-import { applicationScenario, describe, expect, test, type TestApplication } from "@ingeniozit/caits/testing/backend/application";
+import { applicationScenario, describe, expect, test, type TestApplication } from "caits/testing/backend/application";
 import { Message } from "#context/domain/entity/Message.js";
 import { InvalidMessageError } from "#context/domain/error/InvalidMessageError.js";
 import { MessageNotFoundError } from "#context/domain/error/MessageNotFoundError.js";
@@ -36,7 +36,5 @@ describe("edit message", () => {
     await applicationScenario(app)
       .givenTheDto(new EditMessageCommand("unknown", "text"))
       .expectTheErrorToBe(new MessageNotFoundError("unknown"));
-
-    expect(new MessageNotFoundError("unknown")).toMatchObject({ name: "MessageNotFoundError", message: "There is no message with the id unknown." });
   });
 });

@@ -1,6 +1,6 @@
 // The stylesheet of the home page: +page.marko imports it, and only this page loads it. The welcome, the logo on its glass, the
-// guarantees of the harness with the list of the checks, the first steps and the commands, then the work with an AI agent. Each class of the page starts with the
-// name of the page, home-page: a class of the app has one meaning.
+// guarantees of the harness with the list of the checks, the first steps and the commands, then the work with an AI agent. Each class
+// of the page starts with the name of the page, home-page: a class of the app has one meaning.
 @use "values";
 
 // The glass under the logo: the white of milk, and its edge, which catches the light. The dark theme dims them.
@@ -121,13 +121,13 @@
     @media (prefers-reduced-motion: no-preference) {
       animation: home-page-float 7s ease-in-out 3s infinite;
 
-      .caits-arch, .caits-key {
+      .logo__arch, .logo__key {
         stroke: var(--caits-primary);
         stroke-width: 0.4;
         stroke-dasharray: 1;
         animation: home-page-draw 2.4s var(--ease) 0.3s backwards, home-page-fill 1s ease 1.8s backwards;
       }
-      .caits-key { stroke: var(--caits-accent); }
+      .logo__key { stroke: var(--caits-accent); }
     }
   }
 
@@ -405,7 +405,7 @@
       font-size: 0.7rem;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: #6D7199;
+      color: #787CA4;
 
       &::before {
         content: "";

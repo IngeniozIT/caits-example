@@ -1,10 +1,15 @@
 import "./ThemeSwitch.scss";
 
 // The button that switches between the light theme and the dark theme. It puts the theme on <html> (data-theme), and keeps it in a
-// cookie: the layout reads the cookie, thus the server sends each page in the theme of the user. Without the cookie, the pages follow
-// the system.
+// cookie: the layout reads the cookie, thus the server sends each page, and this button, in the theme of the user. Without the cookie,
+// the pages follow the system: the button reads it in the browser.
 
-<let/dark=false>
+export interface Input {
+  /** The theme that the layout reads in the cookie: "light", "dark", or none. */
+  theme?: string;
+}
+
+<let/dark=input.theme === "dark">
 
 <lifecycle onMount() {
   const { theme } = document.documentElement.dataset;

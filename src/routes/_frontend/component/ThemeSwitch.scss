@@ -1,6 +1,7 @@
-// The button of the theme: a round button, without the color of the other buttons.
+// The button of the theme: a round button, without the color of the other buttons. It keeps its size in a narrow menu.
 .theme-switch {
   position: relative;
+  flex-shrink: 0;
   width: 2.4rem;
   height: 2.4rem;
   padding: 0;

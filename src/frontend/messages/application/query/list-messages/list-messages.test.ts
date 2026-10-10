@@ -1,4 +1,4 @@
-import { applicationScenario, describe, test } from "@ingeniozit/caits/testing/frontend/application";
+import { applicationScenario, describe, test } from "caits/testing/frontend/application";
 import { MessagesLoaded } from "#context/application/event/MessagesLoaded.js";
 import { MessagesLoadFailed } from "#context/application/event/MessagesLoadFailed.js";
 import { Message } from "#context/domain/entity/Message.js";

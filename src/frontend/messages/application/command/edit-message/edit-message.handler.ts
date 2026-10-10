@@ -1,4 +1,4 @@
-import type { EventPublisher } from "@ingeniozit/caits/messaging/EventPublisher";
+import type { EventPublisher } from "caits/messaging/EventPublisher";
 import type { MessagesEvent } from "#context/application/event/MessagesEvent.js";
 import { MessagesChanged } from "#context/application/event/MessagesChanged.js";
 import { MessagesChangeFailed } from "#context/application/event/MessagesChangeFailed.js";
@@ -13,7 +13,7 @@ export class EditMessageHandler {
       await this.gateway.edit(command.id, command.text);
       this.events.publish(new MessagesChanged());
     } catch (error) {
-      this.events.publish(new MessagesChangeFailed("edition", (error as Error).message));
+      this.events.publish(new MessagesChangeFailed("edit", (error as Error).message));
     }
   }
 }

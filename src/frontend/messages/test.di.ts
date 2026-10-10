@@ -1,4 +1,4 @@
-import { bind } from "@ingeniozit/caits/di/Container";
+import { bind } from "caits/di/Container";
 import { MessagesGateway } from "./domain/port/messages-gateway/MessagesGateway.js";
 import { FakeMessagesGateway } from "./infra/messages-gateway/fake-messages-gateway.js";
 

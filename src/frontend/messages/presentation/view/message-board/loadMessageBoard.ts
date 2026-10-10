@@ -1,5 +1,5 @@
-import { settled } from "@ingeniozit/caits/state/Loadable";
-import { request } from "@ingeniozit/caits/state/request";
+import { settled } from "caits/state/Loadable";
+import { request } from "caits/state/request";
 import { MessagesRequested } from "#context/application/event/MessagesRequested.js";
 import type { MessagesFrontend } from "#context/presentation/MessagesFrontend.js";
 import { listOf, type MessageList } from "./presentMessageBoard.js";

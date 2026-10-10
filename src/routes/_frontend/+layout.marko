@@ -8,12 +8,26 @@ static function themeOf(request: Request) {
   return request.headers.get("cookie")?.match(/(?:^|;\s*)theme=(light|dark)(?=;|$)/)?.[1];
 }
 
+// The title of each page, by its route: the name of the page, then the name of the app. The home page has the name of the app only.
+static const titles: Partial<Record<string, string>> = { "/messages": "Example · CAITS" };
+
+// The icon of the tab: the logo of Logo.marko, in the colors of the theme of the system. It is in the page: the browser does not ask
+// for /favicon.ico, which the app does not have.
+static const icon = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="6 8 88 88">
+  <style>.arch { fill: #3730A3 } .key { fill: #0F766E } @media (prefers-color-scheme: dark) { .arch { fill: #6574F8 } .key { fill: #2DD4BF } }</style>
+  <path class="arch" d="M25.31 26.02L22.72 28.06L20.30 30.30L18.06 32.72L16.83 34.29L25.48 40.58L26.20 39.67L27.87 37.87L29.67 36.20L31.60 34.68L33.65 33.31L35.79 32.11L38.40 30.94L35.27 20.70L33.93 21.20L30.93 22.58L28.06 24.19ZM64.73 20.70L61.60 30.94L64.21 32.11L66.35 33.31L68.40 34.68L70.33 36.20L72.13 37.87L73.80 39.67L74.52 40.58L83.17 34.29L81.94 32.72L79.70 30.30L77.28 28.06L74.69 26.02L71.94 24.19L69.07 22.58L66.07 21.20ZM33.13 36.78L31.36 38.18L29.71 39.71L27.59 42.11L36.24 48.40L37.27 47.27L39.42 45.44L40.60 44.65L42.31 43.74L39.16 33.43L36.97 34.43L35 35.53ZM57.69 43.74L59.40 44.65L61.69 46.31L62.73 47.27L63.76 48.40L72.41 42.11L70.29 39.71L68.64 38.18L66.87 36.78L65 35.53L63.03 34.43L60.84 33.43ZM18.80 57.54L19.09 55.10L19.56 52.69L20.23 50.33L21.08 48.02L22.11 45.79L23.31 43.65L23.95 42.68L15.30 36.39L14.19 38.06L12.58 40.93L11.20 43.93L10.06 47.02L9.16 50.20L8.52 53.43L8.13 56.70L8.05 58.70L18.75 58.70ZM81.25 58.70L91.95 58.70L91.87 56.70L91.48 53.43L90.84 50.20L89.94 47.02L88.80 43.93L87.42 40.93L85.81 38.06L84.70 36.39L76.05 42.68L76.69 43.65L77.89 45.79L78.92 48.02L79.77 50.33L80.44 52.69L80.91 55.10L81.20 57.54ZM32.05 58.70L32.22 57.18L32.88 54.44L33.96 51.83L34.71 50.50L26.06 44.21L24.43 46.97L23.48 49.02L22.70 51.13L22.09 53.30L21.65 55.51L21.35 58.70ZM78.65 58.70L78.35 55.51L77.91 53.30L77.30 51.13L76.52 49.02L75.57 46.97L73.94 44.21L65.29 50.50L66.04 51.83L67.12 54.44L67.78 57.18L67.95 58.70ZM8 61.30L8 90L32 90L32 61.30ZM68 61.30L68 90L92 90L92 61.30Z"/>
+  <path class="key" d="M37.32 15.78L40.44 15.01L43.60 14.45L46.79 14.11L50 14L53.21 14.11L56.40 14.45L59.56 15.01L62.68 15.78L54 46.06L52.02 45.64L50 45.50L47.98 45.64L46 46.06Z"/>
+</svg>`)}`;
+
+<const/theme=themeOf($global.request)>
+
 <!doctype html>
-<html lang="en" data-theme=themeOf($global.request)>
+<html lang="en" data-theme=theme>
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>CAITS</title>
+    <title>${titles[$global.route] ?? "CAITS"}</title>
+    <link rel="icon" type="image/svg+xml" href=icon/>
   </head>
   <body>
     <header>
@@ -22,7 +36,7 @@ static function themeOf(request: Request) {
         <a href="/" aria-current=($global.route === "/" && "page")>Home</a>
         <a href="/messages" aria-current=($global.route === "/messages" && "page")>Example</a>
       </nav>
-      <ThemeSwitch/>
+      <ThemeSwitch theme=theme/>
     </header>
     <${input.content}/>
   </body>

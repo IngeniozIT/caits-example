@@ -3,21 +3,21 @@
 The small app that `caits init --example` writes: a home page, a menu, and a page where the user adds, edits and removes messages. It shows how to write each layer and each kind of test of a [CAITS](https://github.com/IngeniozIT/caits) project.
 
 ```sh
-npx github:IngeniozIT/caits#v0.4.1 init my-app --example
+npx caits init my-app --example
 ```
 
-The [documentation of CAITS](https://caits.dev/docs/example) tells the app layer by layer.
+The [documentation of CAITS](https://caits.dev/docs/example) describes the app layer by layer.
 
 ## What `init` takes from this repository
 
 - The files of `src/` and `test/`: `init` writes them in the project, in place of the first page.
 - The `dependencies` and the `devDependencies` of `package.json`: `init` adds them to the project, with those of CAITS.
 
-The other files stay here. This repository is not a project: it has no tools of its own. To check the example, make a project with it (`npm run test:template` in CAITS).
+The other files stay here. This repository is not a project: it has no tools of its own. To check the example, run `npm run test:template` in CAITS: it makes a project with the example, and runs all its checks. It reads the example in the folder `../caits-example`, next to CAITS: clone this repository there.
 
 ## The versions
 
-Each version of CAITS writes the example of the same tag here: CAITS `v0.4.1` writes the example of `v0.4.1`. When you tag a version of CAITS, tag the same version here.
+`init --example` gets the example from this repository, at the tag of its own version: CAITS `v0.4.1` writes the files of the tag `v0.4.1` of this repository. When you tag a version of CAITS, tag the same version here.
 
 ## License
 

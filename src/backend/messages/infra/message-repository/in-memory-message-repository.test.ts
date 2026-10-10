@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@ingeniozit/caits/testing/backend/infra";
+import { describe, expect, test } from "caits/testing/backend/infra";
 import { describeMessageRepositoryContract } from "#context/domain/port/message-repository/MessageRepository.contract.js";
 import { InMemoryMessageRepository } from "./in-memory-message-repository.js";
 

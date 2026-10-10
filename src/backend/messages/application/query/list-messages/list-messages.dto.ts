@@ -1,4 +1,4 @@
-import { Input } from "@ingeniozit/caits/messaging/Input";
+import { Input } from "caits/messaging/Input";
 
 export class ListMessagesQuery extends Input<ListMessagesOutput> {}
 /** The messages, in the order they were added. */

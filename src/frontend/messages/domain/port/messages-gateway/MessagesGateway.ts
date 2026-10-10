@@ -1,4 +1,4 @@
-import { Token } from "@ingeniozit/caits/Token";
+import { Token } from "caits/Token";
 import type { Message } from "#context/domain/entity/Message.js";
 
 /** The way to the messages of the server. A refusal of the server is an error that carries the reason. */

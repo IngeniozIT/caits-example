@@ -1,4 +1,4 @@
-import { describe, presentationScenario, test } from "@ingeniozit/caits/testing/backend/presentation";
+import { describe, presentationScenario, test } from "caits/testing/backend/presentation";
 import { ListMessagesOutput, ListMessagesQuery } from "#context/application/query/list-messages/list-messages.dto.js";
 
 describe("listing the messages over HTTP", () => {

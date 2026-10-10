@@ -1,26 +1,41 @@
-import { frontendOf } from "@ingeniozit/caits/di/frontend";
-import { follow } from "@ingeniozit/caits/state/follow";
+import { frontendOf } from "caits/di/frontend";
+import { follow } from "caits/state/follow";
 import { MessageAdditionRequested } from "#context/application/event/MessageAdditionRequested.js";
-import { MessageEditionRequested } from "#context/application/event/MessageEditionRequested.js";
+import { MessageEditRequested } from "#context/application/event/MessageEditRequested.js";
 import { MessageRemovalRequested } from "#context/application/event/MessageRemovalRequested.js";
 import { loadMessageBoard } from "./loadMessageBoard.js";
 import { idleMessageBoardViewModel, presentMessageBoard, type MessageBoardViewModel } from "./presentMessageBoard.js";
 import "./MessageBoard.scss";
 
+// What the status tells the screen readers when a change succeeds.
+static const announcements = { addition: "Message added.", edit: "Message changed.", removal: "Message removed." };
+
 <let/viewModel=idleMessageBoardViewModel as MessageBoardViewModel>
 <let/text="">
 <let/editing=undefined as string | undefined>
 <let/draft="">
+<let/status="">
+// The focus. While a change is on its way, its buttons are disabled, and lose the focus. When the server answers, the focus goes to the
+// element whose id is in focusAfter: `done` when the change succeeds, `failed` when it fails. The effect (<script>) gives the focus to
+// the element whose id is in `focus`, after the board shows the change.
+<let/focusAfter=undefined as { done: string; failed: string } | undefined>
+<let/focus=undefined as string | undefined>
 
 <lifecycle
   onMount() {
     let pending: MessageBoardViewModel["pending"];
     return { stop: follow(frontendOf($global, "messages").store, presentMessageBoard, next => {
-      // When a change succeeds, the form of the addition empties, or the editor closes. When it fails, they keep what the user typed.
-      // While a change is on its way, the fields are read-only: the user cannot type a text that the end of the change would remove.
-      if (pending && !next.pending && !next.additionError && !next.changeError) {
-        if (pending === "addition") text = "";
-        if (pending === "edition") editing = undefined;
+      // When a change succeeds, the form of the addition empties, or the editor closes, and the status tells it. When it fails, they
+      // keep what the user typed, and the alert tells why. While a change is on its way, the fields are read-only: the user cannot type a
+      // text that the end of the change would remove.
+      if (!pending && next.pending) status = "";
+      if (pending && !next.pending) {
+        const failed = next.additionError !== undefined || next.changeError !== undefined;
+        if (!failed && pending === "addition") text = "";
+        if (!failed && pending === "edit") editing = undefined;
+        if (!failed) status = announcements[pending];
+        focus = failed ? focusAfter?.failed : focusAfter?.done;
+        focusAfter = undefined;
       }
       pending = next.pending;
       viewModel = next;
@@ -29,9 +44,17 @@ import "./MessageBoard.scss";
   onDestroy() { this.stop(); }
 />
 
+<script>
+  if (focus) {
+    document.getElementById(focus)?.focus();
+    focus = undefined;
+  }
+</script>
+
 <div class="message-board" aria-busy=(viewModel.pending ? "true" : undefined)>
   <form class="message-board__composer" onSubmit(event) {
     event.preventDefault();
+    focusAfter = { done: "new-message", failed: "new-message" };
     frontendOf($global, "messages").events.publish(new MessageAdditionRequested(text));
   }>
     <label for="new-message">New message</label>
@@ -42,6 +65,8 @@ import "./MessageBoard.scss";
     <if=viewModel.additionError><p id="new-message-error" role="alert">${viewModel.additionError}</p></if>
   </form>
 
+  <p class="message-board__hidden" role="status">${status}</p>
+
   <if=viewModel.changeError><p role="alert">${viewModel.changeError}</p></if>
 
   <await|initial|=loadMessageBoard(frontendOf($global, "messages"))>
@@ -51,23 +76,34 @@ import "./MessageBoard.scss";
     </if>
     <else-if=list.messages.length>
       <ul class="message-board__list" aria-label="Messages">
-        <for|message| of=list.messages>
+        <for|message, index| of=list.messages by="id">
           <li class="message-board__message">
             <if=editing === message.id>
               <form class="message-board__editor" onSubmit(event) {
                 event.preventDefault();
-                frontendOf($global, "messages").events.publish(new MessageEditionRequested(message.id, draft));
+                focusAfter = { done: `edit-button-${message.id}`, failed: `edit-${message.id}` };
+                frontendOf($global, "messages").events.publish(new MessageEditRequested(message.id, draft));
               }>
-                <label class="message-board__hidden-label" for=`edit-${message.id}`>Text of the message</label>
+                <label class="message-board__hidden" for=`edit-${message.id}`>Text of the message</label>
                 <input id=`edit-${message.id}` name="text" value:=draft autocomplete="off" required readonly=!!viewModel.pending/>
                 <button type="submit" disabled=!!viewModel.pending>Save</button>
-                <button type="button" class="message-board__quiet" onClick() { editing = undefined; }>Cancel</button>
+                <button type="button" class="message-board__quiet" onClick() {
+                  editing = undefined;
+                  focus = `edit-button-${message.id}`;
+                }>Cancel</button>
               </form>
             </if>
             <else>
-              <span>${message.text}</span>
-              <button type="button" class="message-board__quiet" disabled=!!viewModel.pending onClick() { editing = message.id; draft = message.text; }>Edit</button>
-              <button type="button" class="message-board__danger" disabled=!!viewModel.pending onClick() {
+              <span id=`message-${message.id}`>${message.text}</span>
+              <button id=`edit-button-${message.id}` type="button" class="message-board__quiet" aria-describedby=`message-${message.id}` disabled=!!viewModel.pending onClick() {
+                editing = message.id;
+                draft = message.text;
+                focus = `edit-${message.id}`;
+              }>Edit</button>
+              <button id=`remove-button-${message.id}` type="button" class="message-board__danger" aria-describedby=`message-${message.id}` disabled=!!viewModel.pending onClick() {
+                // Once the message is removed, the focus goes to the message after it, else to the message before it, else to the field.
+                const neighbour = list.messages[index + 1] ?? list.messages[index - 1];
+                focusAfter = { done: neighbour ? `edit-button-${neighbour.id}` : "new-message", failed: `remove-button-${message.id}` };
                 frontendOf($global, "messages").events.publish(new MessageRemovalRequested(message.id));
               }>Remove</button>
             </else>

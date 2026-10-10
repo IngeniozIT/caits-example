@@ -106,8 +106,8 @@ input {
 
   &::placeholder { color: var(--ink-faint); }
 
+  // A field that has the focus keeps the outline of :focus-visible, and takes a glow of the color of the logo.
   &:focus {
-    outline: none;
     border-color: color-mix(in srgb, var(--caits-primary) 55%, transparent);
     box-shadow: 0 0 0 4px color-mix(in srgb, var(--caits-primary) 16%, transparent);
   }

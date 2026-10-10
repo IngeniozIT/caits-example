@@ -18,10 +18,12 @@
     border-radius: var(--radius);
   }
 
-  // The form of the addition: a card of glass, with the button in the field.
+  // The form of the addition: a card of glass, with the button in the field. Its column can be narrower than the field: on a phone,
+  // the field shrinks, and the button stays in the card.
   &__composer {
     position: relative;
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.75rem;
     padding: 1.25rem;
     overflow: hidden;
@@ -45,15 +47,17 @@
       font-size: 0.875rem;
     }
 
-    // While the addition is on its way, a light runs along the bottom of the card.
-    .message-board[aria-busy="true"] &::after {
-      content: "";
-      position: absolute;
-      inset: auto auto 0 0;
-      width: 40%;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--caits-primary), var(--caits-accent), transparent);
-      animation: message-board-travel 1.2s var(--ease) infinite;
+    // While a change is on its way, a light runs along the bottom of the card. Not for the users who ask for less motion.
+    @media (prefers-reduced-motion: no-preference) {
+      .message-board[aria-busy="true"] &::after {
+        content: "";
+        position: absolute;
+        inset: auto auto 0 0;
+        width: 40%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--caits-primary), var(--caits-accent), transparent);
+        animation: message-board-travel 1.2s var(--ease) infinite;
+      }
     }
   }
 
@@ -77,12 +81,19 @@
       box-shadow: 0 0 0 4px color-mix(in srgb, var(--danger) 14%, transparent);
     }
 
+    // The field has the focus: the outline of the fields of the app goes around the pill, not around the field in it.
+    &:has(input:focus-visible) {
+      outline: 2px solid var(--caits-accent);
+      outline-offset: 3px;
+    }
+
     input, input:focus {
       flex: 1;
       min-width: 0;
       height: 2.5rem;
       background: transparent;
       border: 0;
+      outline: none;
       box-shadow: none;
     }
   }
@@ -224,8 +235,9 @@
     }
   }
 
-  // The label stays for the screen readers, but takes no place: the field shows in the card of the message that it changes.
-  &__hidden-label {
+  // A text for the screen readers only: it takes no place. The label of the editor (the field shows in the card of the message that it
+  // changes), and the status, which tells each change that succeeds.
+  &__hidden {
     position: absolute;
     width: 1px;
     height: 1px;
