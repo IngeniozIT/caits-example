@@ -17,7 +17,7 @@ The other files stay here. This repository is not a project: it has no tools of 
 
 ## The versions
 
-`init --example` gets the example from this repository, at the tag of its own version: CAITS `v0.4.1` writes the files of the tag `v0.4.1` of this repository. When you tag a version of CAITS, tag the same version here.
+`init --example` gets the example from this repository, at the tag of its own version: CAITS `0.5.0` writes the files of the tag `v0.5.0` of this repository. When you tag a version of CAITS, tag the same version here.
 
 ## License
 
