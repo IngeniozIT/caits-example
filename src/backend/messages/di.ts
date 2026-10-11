@@ -1,5 +1,5 @@
-import { bind } from "caits/di/Container";
-import { DataDirectory } from "caits/di/DataDirectory";
+import { bind } from "@ingenioz-it/caits/di/Container";
+import { DataDirectory } from "@ingenioz-it/caits/di/DataDirectory";
 import { MessageRepository } from "./domain/port/message-repository/MessageRepository.js";
 import { FileMessageRepository } from "./infra/message-repository/file-message-repository.js";
 

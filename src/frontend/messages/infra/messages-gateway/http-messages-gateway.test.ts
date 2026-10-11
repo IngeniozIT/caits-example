@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, test, vi } from "caits/testing/frontend/infra";
+import { afterEach, describe, expect, test, vi } from "@ingenioz-it/caits/testing/frontend/infra";
 import { describeMessagesGatewayContract } from "#context/domain/port/messages-gateway/MessagesGateway.contract.js";
 import { HttpMessagesGateway } from "./http-messages-gateway.js";
 

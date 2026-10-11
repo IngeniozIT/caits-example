@@ -1,4 +1,4 @@
-import { Token } from "caits/Token";
+import { Token } from "@ingenioz-it/caits/Token";
 import type { Message } from "#context/domain/entity/Message.js";
 
 /** The messages that the app keeps. */

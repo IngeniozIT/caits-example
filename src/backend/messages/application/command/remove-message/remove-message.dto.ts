@@ -1,4 +1,4 @@
-import { Input } from "caits/messaging/Input";
+import { Input } from "@ingenioz-it/caits/messaging/Input";
 
 export class RemoveMessageCommand extends Input<RemoveMessageOutput> {
   constructor(readonly id: string) { super(); }

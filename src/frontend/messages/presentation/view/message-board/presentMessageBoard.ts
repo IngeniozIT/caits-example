@@ -1,4 +1,4 @@
-import { settled, type Settled } from "caits/state/Loadable";
+import { settled, type Settled } from "@ingenioz-it/caits/state/Loadable";
 import type { Message } from "#context/domain/entity/Message.js";
 import type { Change, MessagesState } from "#context/presentation/store/messagesStore.js";
 

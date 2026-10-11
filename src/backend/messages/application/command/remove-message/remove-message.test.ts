@@ -1,4 +1,4 @@
-import { applicationScenario, describe, expect, test, type TestApplication } from "caits/testing/backend/application";
+import { applicationScenario, describe, expect, test, type TestApplication } from "@ingenioz-it/caits/testing/backend/application";
 import { Message } from "#context/domain/entity/Message.js";
 import { MessageNotFoundError } from "#context/domain/error/MessageNotFoundError.js";
 import { MessageRepository } from "#context/domain/port/message-repository/MessageRepository.js";

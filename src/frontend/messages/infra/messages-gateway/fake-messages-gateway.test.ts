@@ -1,4 +1,4 @@
-import { describe, expect, test } from "caits/testing/frontend/infra";
+import { describe, expect, test } from "@ingenioz-it/caits/testing/frontend/infra";
 import { Message } from "#context/domain/entity/Message.js";
 import { describeMessagesGatewayContract } from "#context/domain/port/messages-gateway/MessagesGateway.contract.js";
 import { FakeMessagesGateway } from "./fake-messages-gateway.js";

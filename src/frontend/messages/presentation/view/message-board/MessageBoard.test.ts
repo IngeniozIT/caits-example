@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-import { afterEach, describe, expect, globalWith, mountTemplate, settle, test, testPresentation } from "caits/testing/frontend/presentation";
+import { afterEach, describe, expect, globalWith, mountTemplate, settle, test, testPresentation } from "@ingenioz-it/caits/testing/frontend/presentation";
 import { AddMessageCommand } from "#context/application/command/add-message/add-message.dto.js";
 import { EditMessageCommand } from "#context/application/command/edit-message/edit-message.dto.js";
 import { RemoveMessageCommand } from "#context/application/command/remove-message/remove-message.dto.js";

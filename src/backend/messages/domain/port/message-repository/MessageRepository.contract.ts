@@ -1,4 +1,4 @@
-import { describe, expect, test } from "caits/testing/backend/infra";
+import { describe, expect, test } from "@ingenioz-it/caits/testing/backend/infra";
 import { Message } from "#context/domain/entity/Message.js";
 import type { MessageRepository } from "./MessageRepository.js";
 

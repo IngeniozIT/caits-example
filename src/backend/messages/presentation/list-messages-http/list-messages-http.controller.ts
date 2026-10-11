@@ -1,4 +1,4 @@
-import { Controller } from "caits/messaging/Controller";
+import { Controller } from "@ingenioz-it/caits/messaging/Controller";
 import { ListMessagesQuery, type ListMessagesOutput } from "#context/application/query/list-messages/list-messages.dto.js";
 
 /** GET /api/messages. */

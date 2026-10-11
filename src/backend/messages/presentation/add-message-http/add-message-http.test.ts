@@ -1,4 +1,4 @@
-import { describe, expect, presentationScenario, test } from "caits/testing/backend/presentation";
+import { describe, expect, presentationScenario, test } from "@ingenioz-it/caits/testing/backend/presentation";
 import { AddMessageCommand, AddMessageOutput } from "#context/application/command/add-message/add-message.dto.js";
 import { InvalidMessageError } from "#context/domain/error/InvalidMessageError.js";
 

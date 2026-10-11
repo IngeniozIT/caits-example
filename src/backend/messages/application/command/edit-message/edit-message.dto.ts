@@ -1,4 +1,4 @@
-import { Input } from "caits/messaging/Input";
+import { Input } from "@ingenioz-it/caits/messaging/Input";
 
 export class EditMessageCommand extends Input<EditMessageOutput> {
   constructor(readonly id: string, readonly text: string) { super(); }

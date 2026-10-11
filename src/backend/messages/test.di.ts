@@ -1,4 +1,4 @@
-import { bind } from "caits/di/Container";
+import { bind } from "@ingenioz-it/caits/di/Container";
 import { MessageRepository } from "./domain/port/message-repository/MessageRepository.js";
 import { InMemoryMessageRepository } from "./infra/message-repository/in-memory-message-repository.js";
 

@@ -3,7 +3,7 @@
 The small app that `caits init --example` writes: a home page, a menu, and a page where the user adds, edits and removes messages. It shows how to write each layer and each kind of test of a [CAITS](https://github.com/IngeniozIT/caits) project.
 
 ```sh
-npx caits init my-app --example
+npx @ingenioz-it/caits init my-app --example
 ```
 
 The [documentation of CAITS](https://caits.dev/docs/example) describes the app layer by layer.

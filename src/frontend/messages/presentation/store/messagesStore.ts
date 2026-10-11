@@ -1,5 +1,5 @@
-import type { StoreDefinition } from "caits/state/createStore";
-import type { Loadable } from "caits/state/Loadable";
+import type { StoreDefinition } from "@ingenioz-it/caits/state/createStore";
+import type { Loadable } from "@ingenioz-it/caits/state/Loadable";
 import { AddMessageCommand } from "#context/application/command/add-message/add-message.dto.js";
 import { EditMessageCommand } from "#context/application/command/edit-message/edit-message.dto.js";
 import { RemoveMessageCommand } from "#context/application/command/remove-message/remove-message.dto.js";

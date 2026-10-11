@@ -1,7 +1,7 @@
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, describe, expect, productionBackend, test, vi } from "caits/testing/backend/integration";
+import { afterEach, describe, expect, productionBackend, test, vi } from "@ingenioz-it/caits/testing/backend/integration";
 import { AddMessageCommand } from "./messages/application/command/add-message/add-message.dto.js";
 import { EditMessageCommand } from "./messages/application/command/edit-message/edit-message.dto.js";
 import { RemoveMessageCommand } from "./messages/application/command/remove-message/remove-message.dto.js";

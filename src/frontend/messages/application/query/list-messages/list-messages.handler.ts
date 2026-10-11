@@ -1,4 +1,4 @@
-import type { EventPublisher } from "caits/messaging/EventPublisher";
+import type { EventPublisher } from "@ingenioz-it/caits/messaging/EventPublisher";
 import type { MessagesEvent } from "#context/application/event/MessagesEvent.js";
 import { MessagesLoaded } from "#context/application/event/MessagesLoaded.js";
 import { MessagesLoadFailed } from "#context/application/event/MessagesLoadFailed.js";

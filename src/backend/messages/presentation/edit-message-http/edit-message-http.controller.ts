@@ -1,4 +1,4 @@
-import { Controller, InvalidInputError, problem, readBody } from "caits/messaging/Controller";
+import { Controller, InvalidInputError, problem, readBody } from "@ingenioz-it/caits/messaging/Controller";
 import { EditMessageCommand, type EditMessageOutput } from "#context/application/command/edit-message/edit-message.dto.js";
 import { InvalidMessageError } from "#context/domain/error/InvalidMessageError.js";
 import { MessageNotFoundError } from "#context/domain/error/MessageNotFoundError.js";

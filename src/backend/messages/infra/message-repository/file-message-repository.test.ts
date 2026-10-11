@@ -1,6 +1,6 @@
 import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { describe, expect, test, useTempDirectories } from "caits/testing/backend/infra";
+import { describe, expect, test, useTempDirectories } from "@ingenioz-it/caits/testing/backend/infra";
 import { Message } from "#context/domain/entity/Message.js";
 import { describeMessageRepositoryContract } from "#context/domain/port/message-repository/MessageRepository.contract.js";
 import { FileMessageRepository } from "./file-message-repository.js";
