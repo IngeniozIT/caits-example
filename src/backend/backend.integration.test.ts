@@ -9,7 +9,8 @@ import { ListMessagesQuery } from "./messages/application/query/list-messages/li
 
 /**
  * The backend as it runs in production: with the bindings of each di.ts, and no test.di.ts. The backend has one context, thus no
- * context map yet: when a second context reacts to the events of the first, the map goes in src/backend/context-map.ts.
+ * context map yet: when a second context reacts to an event of the first, the context map of the first, its context-map.ts, shares it
+ * as an event of the context shared (src/backend/shared/), and the context map of the second turns it into its inputs.
  */
 describe("the backend, on the production bindings", () => {
   let directory: string | undefined;
