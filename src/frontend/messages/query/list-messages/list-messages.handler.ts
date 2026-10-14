@@ -1,7 +1,7 @@
 import type { EventPublisher } from "@ingenioz-it/caits/messaging/EventPublisher";
-import type { MessagesEvent } from "#context/application/event/MessagesEvent.js";
-import { MessagesLoaded } from "#context/application/event/MessagesLoaded.js";
-import { MessagesLoadFailed } from "#context/application/event/MessagesLoadFailed.js";
+import type { MessagesEvent } from "#context/event/MessagesEvent.js";
+import { MessagesLoaded } from "#context/event/MessagesLoaded.js";
+import { MessagesLoadFailed } from "#context/event/MessagesLoadFailed.js";
 import type { MessagesGateway } from "#context/domain/port/messages-gateway/MessagesGateway.js";
 import type { ListMessagesQuery } from "./list-messages.dto.js";
 

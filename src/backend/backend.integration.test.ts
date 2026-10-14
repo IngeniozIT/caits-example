@@ -2,10 +2,10 @@ import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, productionBackend, test, vi } from "@ingenioz-it/caits/testing/backend/integration";
-import { AddMessageCommand } from "./messages/application/command/add-message/add-message.dto.js";
-import { EditMessageCommand } from "./messages/application/command/edit-message/edit-message.dto.js";
-import { RemoveMessageCommand } from "./messages/application/command/remove-message/remove-message.dto.js";
-import { ListMessagesQuery } from "./messages/application/query/list-messages/list-messages.dto.js";
+import { AddMessageCommand } from "./messages/command/add-message/add-message.dto.js";
+import { EditMessageCommand } from "./messages/command/edit-message/edit-message.dto.js";
+import { RemoveMessageCommand } from "./messages/command/remove-message/remove-message.dto.js";
+import { ListMessagesQuery } from "./messages/query/list-messages/list-messages.dto.js";
 
 /**
  * The backend as it runs in production: with the bindings of each di.ts, and no test.di.ts. The backend has one context, thus no

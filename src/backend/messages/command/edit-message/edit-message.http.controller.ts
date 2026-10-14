@@ -1,7 +1,7 @@
 import { Controller, InvalidInputError, problem, readBody } from "@ingenioz-it/caits/messaging/Controller";
-import { EditMessageCommand, type EditMessageOutput } from "#context/application/command/edit-message/edit-message.dto.js";
 import { InvalidMessageError } from "#context/domain/error/InvalidMessageError.js";
 import { MessageNotFoundError } from "#context/domain/error/MessageNotFoundError.js";
+import { EditMessageCommand, type EditMessageOutput } from "./edit-message.dto.js";
 
 /** The id is the last part of the path: /api/messages/{id}. */
 const idOf = (request: Request) => {

@@ -1,8 +1,8 @@
 import { frontendOf } from "@ingenioz-it/caits/di/frontend";
 import { follow } from "@ingenioz-it/caits/state/follow";
-import { MessageAdditionRequested } from "#context/application/event/MessageAdditionRequested.js";
-import { MessageEditRequested } from "#context/application/event/MessageEditRequested.js";
-import { MessageRemovalRequested } from "#context/application/event/MessageRemovalRequested.js";
+import { MessageAdditionRequested } from "#context/event/MessageAdditionRequested.js";
+import { MessageEditRequested } from "#context/event/MessageEditRequested.js";
+import { MessageRemovalRequested } from "#context/event/MessageRemovalRequested.js";
 import { loadMessageBoard } from "./loadMessageBoard.js";
 import { idleMessageBoardViewModel, presentMessageBoard, type MessageBoardViewModel } from "./presentMessageBoard.js";
 import "./MessageBoard.scss";

@@ -1,7 +1,7 @@
 import type { EventPublisher } from "@ingenioz-it/caits/messaging/EventPublisher";
-import type { MessagesEvent } from "#context/application/event/MessagesEvent.js";
-import { MessagesChanged } from "#context/application/event/MessagesChanged.js";
-import { MessagesChangeFailed } from "#context/application/event/MessagesChangeFailed.js";
+import type { MessagesEvent } from "#context/event/MessagesEvent.js";
+import { MessagesChanged } from "#context/event/MessagesChanged.js";
+import { MessagesChangeFailed } from "#context/event/MessagesChangeFailed.js";
 import type { MessagesGateway } from "#context/domain/port/messages-gateway/MessagesGateway.js";
 import type { EditMessageCommand } from "./edit-message.dto.js";
 

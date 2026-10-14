@@ -1,16 +1,16 @@
 // @vitest-environment happy-dom
 import { afterEach, describe, expect, globalWith, mountTemplate, settle, test, testPresentation } from "@ingenioz-it/caits/testing/frontend/presentation";
-import { AddMessageCommand } from "#context/application/command/add-message/add-message.dto.js";
-import { EditMessageCommand } from "#context/application/command/edit-message/edit-message.dto.js";
-import { RemoveMessageCommand } from "#context/application/command/remove-message/remove-message.dto.js";
-import { MessageEditRequested } from "#context/application/event/MessageEditRequested.js";
-import { MessageRemovalRequested } from "#context/application/event/MessageRemovalRequested.js";
-import { MessagesChanged } from "#context/application/event/MessagesChanged.js";
-import { MessagesChangeFailed } from "#context/application/event/MessagesChangeFailed.js";
-import type { MessagesEvent } from "#context/application/event/MessagesEvent.js";
-import { MessagesLoaded } from "#context/application/event/MessagesLoaded.js";
-import { MessagesLoadFailed } from "#context/application/event/MessagesLoadFailed.js";
-import { ListMessagesQuery } from "#context/application/query/list-messages/list-messages.dto.js";
+import { AddMessageCommand } from "#context/command/add-message/add-message.dto.js";
+import { EditMessageCommand } from "#context/command/edit-message/edit-message.dto.js";
+import { RemoveMessageCommand } from "#context/command/remove-message/remove-message.dto.js";
+import { MessageEditRequested } from "#context/event/MessageEditRequested.js";
+import { MessageRemovalRequested } from "#context/event/MessageRemovalRequested.js";
+import { MessagesChanged } from "#context/event/MessagesChanged.js";
+import { MessagesChangeFailed } from "#context/event/MessagesChangeFailed.js";
+import type { MessagesEvent } from "#context/event/MessagesEvent.js";
+import { MessagesLoaded } from "#context/event/MessagesLoaded.js";
+import { MessagesLoadFailed } from "#context/event/MessagesLoadFailed.js";
+import { ListMessagesQuery } from "#context/query/list-messages/list-messages.dto.js";
 import { Message } from "#context/domain/entity/Message.js";
 import MessageBoard from "./MessageBoard.marko";
 

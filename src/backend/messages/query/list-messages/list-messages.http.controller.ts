@@ -1,5 +1,5 @@
 import { Controller } from "@ingenioz-it/caits/messaging/Controller";
-import { ListMessagesQuery, type ListMessagesOutput } from "#context/application/query/list-messages/list-messages.dto.js";
+import { ListMessagesQuery, type ListMessagesOutput } from "./list-messages.dto.js";
 
 /** GET /api/messages. */
 export class ListMessagesHttpController extends Controller<ListMessagesQuery, ListMessagesOutput> {

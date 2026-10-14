@@ -1,6 +1,6 @@
 import { applicationScenario, describe, test } from "@ingenioz-it/caits/testing/frontend/application";
-import { MessagesLoaded } from "#context/application/event/MessagesLoaded.js";
-import { MessagesLoadFailed } from "#context/application/event/MessagesLoadFailed.js";
+import { MessagesLoaded } from "#context/event/MessagesLoaded.js";
+import { MessagesLoadFailed } from "#context/event/MessagesLoadFailed.js";
 import { Message } from "#context/domain/entity/Message.js";
 import { MessagesGateway } from "#context/domain/port/messages-gateway/MessagesGateway.js";
 import { FakeMessagesGateway } from "#context/infra/messages-gateway/fake-messages-gateway.js";

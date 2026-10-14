@@ -1,6 +1,6 @@
 import { Controller, InvalidInputError, problem, readBody } from "@ingenioz-it/caits/messaging/Controller";
-import { AddMessageCommand, type AddMessageOutput } from "#context/application/command/add-message/add-message.dto.js";
 import { InvalidMessageError } from "#context/domain/error/InvalidMessageError.js";
+import { AddMessageCommand, type AddMessageOutput } from "./add-message.dto.js";
 
 /** The body that the API reads: `{ "text": "…" }`. */
 const isBody = (body: unknown): body is { text: string } => typeof (body as { text?: unknown } | null)?.text === "string";

@@ -1,6 +1,6 @@
 import { describe, presentationScenario, test } from "@ingenioz-it/caits/testing/backend/presentation";
-import { RemoveMessageCommand, RemoveMessageOutput } from "#context/application/command/remove-message/remove-message.dto.js";
 import { MessageNotFoundError } from "#context/domain/error/MessageNotFoundError.js";
+import { RemoveMessageCommand, RemoveMessageOutput } from "./remove-message.dto.js";
 
 const problemHeaders = { "content-type": "application/problem+json" };
 

@@ -1,6 +1,6 @@
 import { Controller, problem } from "@ingenioz-it/caits/messaging/Controller";
-import { RemoveMessageCommand, type RemoveMessageOutput } from "#context/application/command/remove-message/remove-message.dto.js";
 import { MessageNotFoundError } from "#context/domain/error/MessageNotFoundError.js";
+import { RemoveMessageCommand, type RemoveMessageOutput } from "./remove-message.dto.js";
 
 /** The id is the last part of the path: /api/messages/{id}. */
 const idOf = (request: Request) => {

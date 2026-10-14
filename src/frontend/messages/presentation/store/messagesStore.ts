@@ -1,11 +1,11 @@
 import type { StoreDefinition } from "@ingenioz-it/caits/state/createStore";
 import type { Loadable } from "@ingenioz-it/caits/state/Loadable";
-import { AddMessageCommand } from "#context/application/command/add-message/add-message.dto.js";
-import { EditMessageCommand } from "#context/application/command/edit-message/edit-message.dto.js";
-import { RemoveMessageCommand } from "#context/application/command/remove-message/remove-message.dto.js";
-import type { MessagesChangeFailed } from "#context/application/event/MessagesChangeFailed.js";
-import type { MessagesEvent } from "#context/application/event/MessagesEvent.js";
-import { ListMessagesQuery } from "#context/application/query/list-messages/list-messages.dto.js";
+import { AddMessageCommand } from "#context/command/add-message/add-message.dto.js";
+import { EditMessageCommand } from "#context/command/edit-message/edit-message.dto.js";
+import { RemoveMessageCommand } from "#context/command/remove-message/remove-message.dto.js";
+import type { MessagesChangeFailed } from "#context/event/MessagesChangeFailed.js";
+import type { MessagesEvent } from "#context/event/MessagesEvent.js";
+import { ListMessagesQuery } from "#context/query/list-messages/list-messages.dto.js";
 import type { Message } from "#context/domain/entity/Message.js";
 
 /** An addition, an edit or a removal. */

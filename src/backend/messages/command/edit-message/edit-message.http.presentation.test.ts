@@ -1,7 +1,7 @@
 import { describe, presentationScenario, test } from "@ingenioz-it/caits/testing/backend/presentation";
-import { EditMessageCommand, EditMessageOutput } from "#context/application/command/edit-message/edit-message.dto.js";
 import { InvalidMessageError } from "#context/domain/error/InvalidMessageError.js";
 import { MessageNotFoundError } from "#context/domain/error/MessageNotFoundError.js";
+import { EditMessageCommand, EditMessageOutput } from "./edit-message.dto.js";
 
 const problemHeaders = { "content-type": "application/problem+json" };
 

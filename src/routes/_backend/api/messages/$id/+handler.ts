@@ -1,6 +1,6 @@
 import { controller } from "@ingenioz-it/caits/di/backend";
-import { EditMessageHttpController } from "#backend/messages/presentation/edit-message-http/edit-message-http.controller.js";
-import { RemoveMessageHttpController } from "#backend/messages/presentation/remove-message-http/remove-message-http.controller.js";
+import { EditMessageHttpController } from "#backend/messages/command/edit-message/edit-message.http.controller.js";
+import { RemoveMessageHttpController } from "#backend/messages/command/remove-message/remove-message.http.controller.js";
 
 /** The routes only give the request to the controller of the context: the controller reads the id in the path. */
 export const PUT = Run.PUT(async (ctx): Promise<Response> => controller(EditMessageHttpController).handle(ctx.request));
