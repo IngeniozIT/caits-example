@@ -1,12 +1,8 @@
 // The stylesheet of the app comes first: the stylesheets of the components and of the views come after it.
 import "./style/app.scss";
+import { themeOf } from "#frontend/site/presentation/component/theme/theme.js";
 import Logo from "./component/Logo.marko";
 import ThemeSwitch from "./component/ThemeSwitch.marko";
-
-// The theme that the user chose with the ThemeSwitch, from its cookie: "light", "dark", or none (the pages follow the system).
-static function themeOf(request: Request) {
-  return request.headers.get("cookie")?.match(/(?:^|;\s*)theme=(light|dark)(?=;|$)/)?.[1];
-}
 
 // The title of each page, by its route: the name of the page, then the name of the app. The home page has the name of the app only.
 static const titles: Partial<Record<string, string>> = { "/messages": "Example · CAITS" };
@@ -19,7 +15,8 @@ static const icon = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http:/
   <path class="key" d="M37.32 15.78L40.44 15.01L43.60 14.45L46.79 14.11L50 14L53.21 14.11L56.40 14.45L59.56 15.01L62.68 15.78L54 46.06L52.02 45.64L50 45.50L47.98 45.64L46 46.06Z"/>
 </svg>`)}`;
 
-<const/theme=themeOf($global.request)>
+// The theme that the user chose with the ThemeSwitch, from its cookie: "light", "dark", or none (the pages follow the system).
+<const/theme=themeOf($global.request.headers.get("cookie"))>
 
 <!doctype html>
 <html lang="en" data-theme=theme>

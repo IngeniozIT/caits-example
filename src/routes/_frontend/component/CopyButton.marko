@@ -1,29 +1,20 @@
+import { copy, textToCopy } from "#frontend/site/presentation/component/clipboard/clipboard.js";
 import "./CopyButton.scss";
 
 // The button that copies the text of an element of the page (target: its id), with its spaces collapsed: a command, or a prompt. Its
-// label names what it copies. Then it says "Copied", or "Copy failed", for two seconds, also to a screen reader.
+// label names what it copies. Then it says "Copied", or "Copy failed", for two seconds, also to a screen reader. The copy is in the
+// context site (presentation/component/clipboard/), with its test.
 
 export interface Input {
   target: string;
   label: string;
 }
 
-// Copies the text, and tells if the copy succeeded. A page on plain HTTP has no clipboard, and the browser can refuse the copy.
-static async function copy(text: string): Promise<boolean> {
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
 <let/result=undefined as "Copied" | "Copy failed" | undefined>
 <let/timer=undefined as ReturnType<typeof setTimeout> | undefined>
 
 <button type="button" class="copy-button" aria-label=(result ?? input.label) onClick() {
-  const text = document.getElementById(input.target)?.textContent?.replace(/\s+/g, " ").trim() ?? "";
-  void copy(text).then(copied => {
+  void copy(textToCopy(document.getElementById(input.target)?.textContent ?? ""), navigator.clipboard).then(copied => {
     // A second click starts the two seconds again.
     clearTimeout(timer);
     result = copied ? "Copied" : "Copy failed";

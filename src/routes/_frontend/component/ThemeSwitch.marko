@@ -1,8 +1,10 @@
+import { isDark, themeCookie } from "#frontend/site/presentation/component/theme/theme.js";
 import "./ThemeSwitch.scss";
 
 // The button that switches between the light theme and the dark theme. It puts the theme on <html> (data-theme), and keeps it in a
 // cookie: the layout reads the cookie, thus the server sends each page, and this button, in the theme of the user. Without the cookie,
-// the pages follow the system: the button reads it in the browser.
+// the pages follow the system: the button reads it in the browser. The theme and its cookie are in the context site
+// (presentation/component/theme/), with their test.
 
 export interface Input {
   /** The theme that the layout reads in the cookie: "light", "dark", or none. */
@@ -12,15 +14,14 @@ export interface Input {
 <let/dark=input.theme === "dark">
 
 <lifecycle onMount() {
-  const { theme } = document.documentElement.dataset;
-  dark = theme ? theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  dark = isDark(document.documentElement.dataset.theme, () => matchMedia("(prefers-color-scheme: dark)").matches);
 }/>
 
 <button type="button" class="theme-switch" aria-label="Dark mode" aria-pressed=(dark ? "true" : "false") onClick() {
   const theme = dark ? "light" : "dark";
   dark = theme === "dark";
   document.documentElement.dataset.theme = theme;
-  document.cookie = `theme=${theme}; path=/; max-age=31536000; samesite=lax`;
+  document.cookie = themeCookie(theme);
 }>
   <svg class="theme-switch__moon" viewBox="0 0 24 24" aria-hidden="true">
     <path d="M20.5 14.1A8.5 8.5 0 1 1 9.9 3.5a6.6 6.6 0 0 0 10.6 10.6Z"/>
