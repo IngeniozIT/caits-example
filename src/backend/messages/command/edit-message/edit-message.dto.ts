@@ -1,7 +1,5 @@
-import { Input } from "@ingenioz-it/caits/messaging/Input";
-
-export class EditMessageCommand extends Input<EditMessageOutput> {
-  constructor(readonly id: string, readonly text: string) { super(); }
+export class EditMessageCommand {
+  constructor(readonly id: string, readonly text: string) {}
 }
 /** The message with its new text, as the domain keeps it. */
 export class EditMessageOutput {

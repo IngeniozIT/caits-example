@@ -1,11 +1,11 @@
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, describe, expect, productionBackend, test, vi } from "@ingenioz-it/caits/testing/backend/integration";
-import { AddMessageCommand } from "./messages/command/add-message/add-message.dto.js";
+import { afterEach, assert, describe, expect, productionBackend, test, vi } from "@ingenioz-it/caits/testing/backend/integration";
+import { AddMessageCommand, AddMessageOutput } from "./messages/command/add-message/add-message.dto.js";
 import { EditMessageCommand } from "./messages/command/edit-message/edit-message.dto.js";
 import { RemoveMessageCommand } from "./messages/command/remove-message/remove-message.dto.js";
-import { ListMessagesQuery } from "./messages/query/list-messages/list-messages.dto.js";
+import { ListMessagesOutput, ListMessagesQuery } from "./messages/query/list-messages/list-messages.dto.js";
 
 /**
  * The backend as it runs in production: with the bindings of each di.ts, and no test.di.ts. The backend has one context, thus no
@@ -25,7 +25,9 @@ describe("the backend, on the production bindings", () => {
     directory = await mkdtemp(join(tmpdir(), "messages-"));
     vi.stubEnv("DATA_DIR", join(directory, "data"));
     const first = productionBackend();
-    const { id } = await first.send(new AddMessageCommand("Hello"));
+    const added = await first.send(new AddMessageCommand("Hello"));
+    assert(added instanceof AddMessageOutput);
+    const { id } = added;
     await first.send(new AddMessageCommand("Bye"));
     await first.send(new EditMessageCommand(id, "Hello again"));
 
@@ -33,7 +35,7 @@ describe("the backend, on the production bindings", () => {
 
     const second = productionBackend();
     await second.send(new RemoveMessageCommand(id));
-    expect((await second.send(new ListMessagesQuery())).messages.map(message => message.text)).toEqual(["Bye"]);
+    expect(await second.send(new ListMessagesQuery())).toEqual(new ListMessagesOutput([{ id: expect.any(String) as string, text: "Bye" }]));
   });
 
   test.for([undefined, ""])("without DATA_DIR (%j), the data folder is tmp, in the working folder", async dataDirectory => {
