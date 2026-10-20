@@ -1,5 +1,5 @@
-/** A handler publishes it when the server refuses a change, or cannot be reached: `reason` tells why. */
+/** A handler publishes it when the server refuses the change on its way, or cannot be reached: `reason` tells why. */
 export class MessagesChangeFailed {
   readonly type = "messages.change-failed" as const;
-  constructor(readonly change: "addition" | "edit" | "removal", readonly reason: string) {}
+  constructor(readonly reason: string) {}
 }

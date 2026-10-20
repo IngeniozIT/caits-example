@@ -13,7 +13,7 @@ export class RemoveMessageHandler {
       await this.gateway.remove(command.id);
       this.events.publish(new MessagesChanged());
     } catch (error) {
-      this.events.publish(new MessagesChangeFailed("removal", (error as Error).message));
+      this.events.publish(new MessagesChangeFailed((error as Error).message));
     }
   }
 }

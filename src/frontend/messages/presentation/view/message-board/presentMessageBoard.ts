@@ -7,7 +7,7 @@ export type MessageList = { messages: { id: string; text: string }[]; failure: s
 
 export type MessageBoardViewModel = {
   list?: MessageList;
-  /** The change on its way, if any: the buttons wait for it. */
+  /** The change on its way, if any: the buttons are disabled until it is answered. */
   pending: Change | undefined;
   /** Why the server refused the last addition: the form of the addition shows it. */
   additionError: string | undefined;

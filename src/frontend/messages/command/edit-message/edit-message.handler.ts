@@ -13,7 +13,7 @@ export class EditMessageHandler {
       await this.gateway.edit(command.id, command.text);
       this.events.publish(new MessagesChanged());
     } catch (error) {
-      this.events.publish(new MessagesChangeFailed("edit", (error as Error).message));
+      this.events.publish(new MessagesChangeFailed((error as Error).message));
     }
   }
 }

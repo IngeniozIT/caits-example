@@ -95,7 +95,7 @@ describe("MessageBoard action → DTO", () => {
     expect(sent).toStrictEqual([new EditMessageCommand("m1", "Hello again")]);
   });
 
-  test("removing a message sends its id, and the buttons wait for the answer", async () => {
+  test("removing a message sends its id, and disables the buttons until the answer", async () => {
     const { sent, mount } = setup();
     const { container } = await mount(new MessagesLoaded([hello, bye]));
 
@@ -120,7 +120,7 @@ describe("MessageBoard action → DTO", () => {
     expect(additionField(container).value).toBe("");
   });
 
-  test.for([new MessagesChanged(), new MessagesChangeFailed("addition", "HTTP 500")])("once a change is answered (%o), the next change is sent", async answer => {
+  test.for([new MessagesChanged(), new MessagesChangeFailed("HTTP 500")])("once a change is answered (%o), the next change is sent", async answer => {
     const { events, sent, mount } = setup();
     const { container } = await mount();
 
@@ -147,7 +147,7 @@ describe("MessageBoard action → DTO", () => {
 
     events.publish(new MessagesLoaded([hello]));
     events.publish(new MessagesLoadFailed("HTTP 503"));
-    events.publish(new MessagesChangeFailed("removal", "HTTP 500"));
+    events.publish(new MessagesChangeFailed("HTTP 500"));
     await settle();
 
     expect(sent).toStrictEqual([]);
@@ -188,7 +188,7 @@ describe("MessageBoard store → HTML", () => {
     expect(items(container)).toEqual(["Hello", "Bye"]);
   });
 
-  test("while a change is on its way, the board is busy, the fields are read-only and the buttons wait for it", async () => {
+  test("while a change is on its way, the board is busy, the fields are read-only and the buttons are disabled", async () => {
     const { events, mount } = setup();
     const { container } = await mount(new MessagesLoaded([hello, bye]));
     await click(button(itemOf(container, "Hello"), "Edit"));
@@ -203,7 +203,7 @@ describe("MessageBoard store → HTML", () => {
     await add(container, "Third");
     expect(waiting()).toEqual([true, true, true, true, true, true, true]);
 
-    events.publish(new MessagesChangeFailed("addition", "HTTP 500"));
+    events.publish(new MessagesChangeFailed("HTTP 500"));
     await settle();
     expect(waiting()).toEqual([false, false, false, false, false, false, false]);
   });
@@ -224,7 +224,7 @@ describe("MessageBoard store → HTML", () => {
     const { container } = await mount();
 
     await add(container, " ");
-    events.publish(new MessagesChangeFailed("addition", "A message cannot be empty."));
+    events.publish(new MessagesChangeFailed("A message cannot be empty."));
     await settle();
 
     expect(additionField(container).value).toBe(" ");
@@ -247,13 +247,14 @@ describe("MessageBoard store → HTML", () => {
   });
 
   test.for([
-    ["edit", "A message cannot be empty."],
-    ["removal", "There is no message with the id m1."]
-  ] as const)("an %s that the server refuses is told above the list, not at the field of the addition", async ([change, reason]) => {
+    ["edit", "A message cannot be empty.", (container: Element) => edit(container, "m1", "Hello", " ")],
+    ["removal", "There is no message with the id m1.", (container: Element) => click(button(itemOf(container, "Hello"), "Remove"))]
+  ] as const)("an %s that the server refuses is told above the list, not at the field of the addition", async ([, reason, change]) => {
     const { events, mount } = setup();
     const { container } = await mount(new MessagesLoaded([hello]));
 
-    events.publish(new MessagesChangeFailed(change, reason));
+    await change(container);
+    events.publish(new MessagesChangeFailed(reason));
     await settle();
 
     expect(alerts(container)).toEqual([reason]);
@@ -266,7 +267,7 @@ describe("MessageBoard store → HTML", () => {
     const { container } = await mount(new MessagesLoaded([hello]));
 
     await edit(container, "m1", "Hello", " ");
-    events.publish(new MessagesChangeFailed("edit", "A message cannot be empty."));
+    events.publish(new MessagesChangeFailed("A message cannot be empty."));
     await settle();
 
     expect(editor(container, "m1")?.value).toBe(" ");
@@ -354,7 +355,7 @@ describe("MessageBoard for a keyboard and a screen reader", () => {
     const { container } = await mount(new MessagesLoaded([hello]));
 
     await edit(container, "m1", "Hello", " ");
-    events.publish(new MessagesChangeFailed("edit", "A message cannot be empty."));
+    events.publish(new MessagesChangeFailed("A message cannot be empty."));
     await settle();
     expect(focused()).toBe(editor(container, "m1"));
 
@@ -398,13 +399,13 @@ describe("MessageBoard for a keyboard and a screen reader", () => {
     const { container } = await mount(new MessagesLoaded([hello, bye]));
 
     await click(button(itemOf(container, "Bye"), "Remove"));
-    events.publish(new MessagesChangeFailed("removal", "There is no message with the id m2."));
+    events.publish(new MessagesChangeFailed("There is no message with the id m2."));
     await settle();
 
     expect(focused()).toBe(button(itemOf(container, "Bye"), "Remove"));
   });
 
-  test.for([new MessagesChanged(), new MessagesChangeFailed("addition", "A message cannot be empty.")])("each addition gives the focus back to its field, once it is answered (%o)", async answer => {
+  test.for([new MessagesChanged(), new MessagesChangeFailed("A message cannot be empty.")])("each addition gives the focus back to its field, once it is answered (%o)", async answer => {
     const { events, mount } = setup();
     const { container } = await mount();
 
@@ -452,7 +453,7 @@ describe("MessageBoard for a keyboard and a screen reader", () => {
     const { container } = await mount();
 
     await add(container, " ");
-    events.publish(new MessagesChangeFailed("addition", "A message cannot be empty."));
+    events.publish(new MessagesChangeFailed("A message cannot be empty."));
     await settle();
 
     expect(status(container)).toBe("");

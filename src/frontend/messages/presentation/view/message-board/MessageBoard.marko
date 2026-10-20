@@ -65,7 +65,7 @@ static const announcements = { addition: "Message added.", edit: "Message change
     <if=viewModel.additionError><p id="new-message-error" role="alert">${viewModel.additionError}</p></if>
   </form>
 
-  <p class="message-board__hidden" role="status">${status}</p>
+  <p id="board-status" class="message-board__hidden" role="status">${status}</p>
 
   <if=viewModel.changeError><p role="alert">${viewModel.changeError}</p></if>
 
@@ -112,7 +112,7 @@ static const announcements = { addition: "Message added.", edit: "Message change
       </ul>
     </else-if>
     <else>
-      <div class="message-board__empty">
+      <div id="empty-board" class="message-board__empty">
         <span class="message-board__arch" aria-hidden="true"></span>
         <p>No message yet.</p>
         <p>Write the first one: it takes its place here.</p>

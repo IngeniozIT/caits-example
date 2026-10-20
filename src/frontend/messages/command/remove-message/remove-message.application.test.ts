@@ -22,6 +22,6 @@ describe("remove message", () => {
 
     await applicationScenario(app)
       .givenTheDto(new RemoveMessageCommand("m1"))
-      .expectItToPublish(new MessagesChangeFailed("removal", "There is no message with the id m1."));
+      .expectItToPublish(new MessagesChangeFailed("There is no message with the id m1."));
   });
 });

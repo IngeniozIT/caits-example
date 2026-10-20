@@ -24,9 +24,9 @@ test("Given a visitor on the home page, When they open the example from the menu
   await expect(menu(page).getByRole("link", { name: "Home" })).not.toHaveAttribute("aria-current");
 });
 
-test("Given a visitor on the page of the messages, When they add, edit and remove messages, Then the list shows each change, also after a reload", async ({ page }) => {
+test("Given a visitor on the messages page, When they add, edit and remove messages, Then the list shows each change, also after a reload", async ({ page }) => {
   await page.goto("/messages");
-  await expect(page.getByText("No message yet.")).toBeVisible();
+  await expect(page.locator("#empty-board")).toBeVisible();
 
   await add(page, "Hello");
   await expect(messages(page)).toHaveText([/Hello/]);
@@ -46,7 +46,7 @@ test("Given a visitor on the page of the messages, When they add, edit and remov
   await expect(messages(page)).toHaveText([/Hello again/]);
 });
 
-test("Given a visitor on the page of the messages, When they add, edit and remove a message, Then the focus goes where they act next, and the status tells each change", async ({ page }) => {
+test("Given a visitor on the messages page, When they add, edit and remove a message, Then the focus goes where they act next, and the status tells each change", async ({ page }) => {
   const status = page.getByRole("status");
   await page.goto("/messages");
 
@@ -64,12 +64,12 @@ test("Given a visitor on the page of the messages, When they add, edit and remov
   await expect(status).toHaveText("Message changed.");
 
   await messages(page).getByRole("button", { name: "Remove" }).click();
-  await expect(page.getByText("No message yet.")).toBeVisible();
+  await expect(page.locator("#empty-board")).toBeVisible();
   await expect(page.getByLabel("New message")).toBeFocused();
   await expect(status).toHaveText("Message removed.");
 });
 
-test("Given a visitor on the page of the messages, When they add a message of spaces only, Then the page tells them why the domain refuses it", async ({ page }) => {
+test("Given a visitor on the messages page, When they add a message of spaces only, Then the page tells them why the domain refuses it", async ({ page }) => {
   await page.goto("/messages");
 
   await add(page, "   ");

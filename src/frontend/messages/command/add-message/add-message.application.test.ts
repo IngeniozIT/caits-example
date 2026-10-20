@@ -22,6 +22,6 @@ describe("add message", () => {
 
     await applicationScenario(app)
       .givenTheDto(new AddMessageCommand(" "))
-      .expectItToPublish(new MessagesChangeFailed("addition", "A message cannot be empty."));
+      .expectItToPublish(new MessagesChangeFailed("A message cannot be empty."));
   });
 });

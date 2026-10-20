@@ -3,13 +3,12 @@ import type { Loadable } from "@ingenioz-it/caits/state/Loadable";
 import { AddMessageCommand } from "#context/command/add-message/add-message.dto.js";
 import { EditMessageCommand } from "#context/command/edit-message/edit-message.dto.js";
 import { RemoveMessageCommand } from "#context/command/remove-message/remove-message.dto.js";
-import type { MessagesChangeFailed } from "#context/event/MessagesChangeFailed.js";
 import type { MessagesEvent } from "#context/event/MessagesEvent.js";
 import { ListMessagesQuery } from "#context/query/list-messages/list-messages.dto.js";
 import type { Message } from "#context/domain/entity/Message.js";
 
-/** An addition, an edit or a removal. */
-export type Change = MessagesChangeFailed["change"];
+/** What the user can change on the board. */
+export type Change = "addition" | "edit" | "removal";
 
 export type MessagesState = {
   messages: Loadable<Message[]>;
@@ -20,7 +19,7 @@ export type MessagesState = {
 const pending = (state: MessagesState, change: Change): MessagesState =>
   state.change.status === "pending" ? state : { ...state, change: { status: "pending", change } };
 
-/** The messages store. Once the server made a change, the store asks for the messages again. */
+/** The messages store. When a handler publishes `MessagesChanged`, the store asks for the messages again. */
 const messagesStore: StoreDefinition<MessagesState, MessagesEvent> = {
   initialState: { messages: { status: "idle" }, change: { status: "idle" } },
   reduce(state, event) {
@@ -32,7 +31,8 @@ const messagesStore: StoreDefinition<MessagesState, MessagesEvent> = {
       case "messages.edit-requested": return pending(state, "edit");
       case "messages.removal-requested": return pending(state, "removal");
       case "messages.changed": return { ...state, change: { status: "idle" } };
-      case "messages.change-failed": return { ...state, change: { status: "failed", change: event.change, reason: event.reason } };
+      // One change at a time: the failure is the one of the change on its way.
+      case "messages.change-failed": return state.change.status === "pending" ? { ...state, change: { status: "failed", change: state.change.change, reason: event.reason } } : state;
     }
   },
   send(state, event) {

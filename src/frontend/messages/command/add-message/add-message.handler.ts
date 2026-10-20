@@ -13,7 +13,7 @@ export class AddMessageHandler {
       await this.gateway.add(command.text);
       this.events.publish(new MessagesChanged());
     } catch (error) {
-      this.events.publish(new MessagesChangeFailed("addition", (error as Error).message));
+      this.events.publish(new MessagesChangeFailed((error as Error).message));
     }
   }
 }
