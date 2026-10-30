@@ -1,4 +1,5 @@
-import { Controller, InvalidInputError, problem, readBody } from "@ingenioz-it/caits/messaging/Controller";
+import { Controller, InvalidInputError, problem } from "@ingenioz-it/caits/messaging/Controller";
+import type { Request } from "@ingenioz-it/caits/messaging/Request";
 import { InvalidMessageError } from "#context/domain/error/InvalidMessageError.js";
 import { AddMessageCommand, type AddMessageOutput } from "./add-message.dto.js";
 
@@ -8,7 +9,7 @@ const isBody = (body: unknown): body is { text: string } => typeof (body as { te
 /** POST /api/messages: turns the request into an AddMessageCommand, and the output or the error into a response. */
 export class AddMessageHttpController extends Controller<AddMessageCommand, AddMessageOutput> {
   protected async toDto(request: Request): Promise<AddMessageCommand> {
-    const body = await readBody(request);
+    const body = await request.content();
     if (!isBody(body)) throw new InvalidInputError("Invalid body", [{ path: ["text"], message: "The text must be a string." }]);
     return new AddMessageCommand(body.text);
   }

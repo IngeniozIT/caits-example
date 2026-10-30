@@ -1,4 +1,5 @@
 import { Controller, problem } from "@ingenioz-it/caits/messaging/Controller";
+import type { Request } from "@ingenioz-it/caits/messaging/Request";
 import { MessageNotFoundError } from "#context/domain/error/MessageNotFoundError.js";
 import { RemoveMessageCommand, type RemoveMessageOutput } from "./remove-message.dto.js";
 
